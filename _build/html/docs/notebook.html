@@ -321,548 +321,113 @@ document.write(`
 <h1>Het verschil tussen startpositie en strategie<a class="headerlink" href="#het-verschil-tussen-startpositie-en-strategie" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="c1"># Create the HTML content as a string</span>
-<span class="n">html_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;div id=&quot;f1-heatmap-container&quot;&gt;</span>
-<span class="s2">    &lt;style&gt;</span>
-<span class="s2">        #f1-heatmap-container {</span>
-<span class="s2">            font-family: Arial, sans-serif;</span>
-<span class="s2">            background: white;</span>
-<span class="s2">            padding: 20px;</span>
-<span class="s2">            border-radius: 10px;</span>
-<span class="s2">            box-shadow: 0 2px 10px rgba(0,0,0,0.1);</span>
-<span class="s2">            max-width: 1200px;</span>
-<span class="s2">        }</span>
-<span class="s2">        .controls {</span>
-<span class="s2">            margin-bottom: 20px;</span>
-<span class="s2">            padding: 15px;</span>
-<span class="s2">            background: #f8f9fa;</span>
-<span class="s2">            border-radius: 5px;</span>
-<span class="s2">        }</span>
-<span class="s2">        .controls select {</span>
-<span class="s2">            padding: 8px 12px;</span>
-<span class="s2">            font-size: 14px;</span>
-<span class="s2">            border: 1px solid #ddd;</span>
-<span class="s2">            border-radius: 4px;</span>
-<span class="s2">            margin-left: 10px;</span>
-<span class="s2">        }</span>
-<span class="s2">        .info-box {</span>
-<span class="s2">            background: #e3f2fd;</span>
-<span class="s2">            padding: 10px;</span>
-<span class="s2">            border-radius: 5px;</span>
-<span class="s2">            margin: 10px 0;</span>
-<span class="s2">            border-left: 4px solid #2196f3;</span>
-<span class="s2">        }</span>
-<span class="s2">        #heatmap {</span>
-<span class="s2">            width: 100%;</span>
-<span class="s2">            height: 700px;</span>
-<span class="s2">        }</span>
-<span class="s2">        .loading {</span>
-<span class="s2">            text-align: center;</span>
-<span class="s2">            padding: 50px;</span>
-<span class="s2">            color: #666;</span>
-<span class="s2">        }</span>
-<span class="s2">    &lt;/style&gt;</span>
-<span class="s2">    </span>
-<span class="s2">    &lt;h2&gt;🏎️ F1 Starting vs Finishing Position Analysis&lt;/h2&gt;</span>
-<span class="s2">    </span>
-<span class="s2">    &lt;div class=&quot;controls&quot;&gt;</span>
-<span class="s2">        &lt;label for=&quot;yearSelect&quot;&gt;&lt;strong&gt;Select Year:&lt;/strong&gt;&lt;/label&gt;</span>
-<span class="s2">        &lt;select id=&quot;yearSelect&quot;&gt;</span>
-<span class="s2">            &lt;option value=&quot;total&quot;&gt;All Years (Total)&lt;/option&gt;</span>
-<span class="s2">        &lt;/select&gt;</span>
-<span class="s2">    &lt;/div&gt;</span>
-<span class="s2">    </span>
-<span class="s2">    &lt;div id=&quot;infoBox&quot; class=&quot;info-box&quot;&gt;</span>
-<span class="s2">        &lt;div class=&quot;loading&quot;&gt;Loading F1 data...&lt;/div&gt;</span>
-<span class="s2">    &lt;/div&gt;</span>
-<span class="s2">    </span>
-<span class="s2">    &lt;div id=&quot;heatmap&quot;&gt;&lt;/div&gt;</span>
-<span class="s2">&lt;/div&gt;</span>
+<span class="c1"># Read the CSV file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;merged_f1_data_1994_2022.csv&#39;</span><span class="p">)</span>
 
-<span class="s2">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="s2">&lt;script&gt;</span>
-<span class="s2">    // Parse CSV data</span>
-<span class="s2">    function parseCSV(csvText) {</span>
-<span class="s2">        const lines = csvText.trim().split(&#39;</span><span class="se">\\</span><span class="s2">n&#39;);</span>
-<span class="s2">        const headers = lines[0].split(&#39;,&#39;).map(h =&gt; h.trim().replace(/&quot;/g, &#39;&#39;));</span>
-<span class="s2">        const data = [];</span>
-<span class="s2">        </span>
-<span class="s2">        for (let i = 1; i &lt; lines.length; i++) {</span>
-<span class="s2">            const values = lines[i].split(&#39;,&#39;).map(v =&gt; v.trim().replace(/&quot;/g, &#39;&#39;));</span>
-<span class="s2">            if (values.length === headers.length) {</span>
-<span class="s2">                const row = </span><span class="si">{}</span><span class="s2">;</span>
-<span class="s2">                headers.forEach((header, index) =&gt; {</span>
-<span class="s2">                    if (header === &#39;Year&#39; || header === &#39;Pos&#39;) {</span>
-<span class="s2">                        row[header] = parseInt(values[index]);</span>
-<span class="s2">                    } else {</span>
-<span class="s2">                        row[header] = values[index];</span>
-<span class="s2">                    }</span>
-<span class="s2">                });</span>
-<span class="s2">                data.push(row);</span>
-<span class="s2">            }</span>
-<span class="s2">        }</span>
-<span class="s2">        return data;</span>
-<span class="s2">    }</span>
+<span class="c1"># Convert FinPos to numeric, treating &#39;NC&#39; as NaN</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
 
-<span class="s2">    // Load F1 data from CSV file</span>
-<span class="s2">    async function loadF1Data() {</span>
-<span class="s2">        try {</span>
-<span class="s2">            const response = await fetch(&#39;merged_f1_data_1994_2022.csv&#39;);</span>
-<span class="s2">            if (!response.ok) {</span>
-<span class="s2">                throw new Error(`HTTP error! status: $</span><span class="si">{response.status}</span><span class="s2">`);</span>
-<span class="s2">            }</span>
-<span class="s2">            const csvText = await response.text();</span>
-<span class="s2">            return parseCSV(csvText);</span>
-<span class="s2">        } catch (error) {</span>
-<span class="s2">            console.error(&#39;Error loading F1 data:&#39;, error);</span>
-<span class="s2">            return [];</span>
-<span class="s2">        }</span>
-<span class="s2">    }</span>
+<span class="c1"># Filter out rows where either position is NaN</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">,</span> <span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">])</span>
 
-<span class="s2">    // Create heatmap data</span>
-<span class="s2">    function createHeatmapData(data, selectedYear = null) {</span>
-<span class="s2">        let filteredData = data;</span>
-<span class="s2">        let titleSuffix = &quot; - All Years (1994-2022)&quot;;</span>
-<span class="s2">        </span>
-<span class="s2">        if (selectedYear &amp;&amp; selectedYear !== &#39;total&#39;) {</span>
-<span class="s2">            filteredData = data.filter(d =&gt; d.Year === parseInt(selectedYear));</span>
-<span class="s2">            titleSuffix = ` - $</span><span class="si">{selectedYear}</span><span class="s2">`;</span>
-<span class="s2">        }</span>
+<span class="c1"># Convert to integers</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
-<span class="s2">        const maxStartPos = Math.max(...filteredData.map(d =&gt; d.Pos));</span>
-<span class="s2">        const startPositions = Array.from({length: Math.min(maxStartPos, 26)}, (_, i) =&gt; i + 1);</span>
-<span class="s2">        </span>
-<span class="s2">        const allFinishPositions = [...new Set(filteredData.map(d =&gt; d.FinPos))];</span>
-<span class="s2">        const numericPositions = [];</span>
-<span class="s2">        const nonNumericPositions = [];</span>
-<span class="s2">        </span>
-<span class="s2">        allFinishPositions.forEach(pos =&gt; {</span>
-<span class="s2">            const numPos = parseInt(pos);</span>
-<span class="s2">            if (!isNaN(numPos) &amp;&amp; numPos &gt;= 1 &amp;&amp; numPos &lt;= 30) {</span>
-<span class="s2">                numericPositions.push(numPos);</span>
-<span class="s2">            } else if (pos &amp;&amp; pos !== &#39;nan&#39;) {</span>
-<span class="s2">                if ([&#39;DNF&#39;, &#39;DSQ&#39;, &#39;NC&#39;, &#39;DNS&#39;, &#39;EX&#39;, &#39;WD&#39;].includes(pos)) {</span>
-<span class="s2">                    if (!nonNumericPositions.includes(&#39;DNF&#39;)) {</span>
-<span class="s2">                        nonNumericPositions.push(&#39;DNF&#39;);</span>
-<span class="s2">                    }</span>
-<span class="s2">                } else {</span>
-<span class="s2">                    nonNumericPositions.push(pos);</span>
-<span class="s2">                }</span>
-<span class="s2">            }</span>
-<span class="s2">        });</span>
-<span class="s2">        </span>
-<span class="s2">        const finishPositions = numericPositions.sort((a, b) =&gt; a - b).concat(nonNumericPositions.sort());</span>
-<span class="s2">        </span>
-<span class="s2">        const matrix = Array(finishPositions.length).fill().map(() =&gt; Array(startPositions.length).fill(0));</span>
-<span class="s2">        </span>
-<span class="s2">        filteredData.forEach(row =&gt; {</span>
-<span class="s2">            const startIdx = startPositions.indexOf(row.Pos);</span>
-<span class="s2">            if (startIdx === -1) return;</span>
-<span class="s2">            </span>
-<span class="s2">            let finishIdx = -1;</span>
-<span class="s2">            const finishPos = row.FinPos;</span>
-<span class="s2">            </span>
-<span class="s2">            if ([&#39;DNF&#39;, &#39;DSQ&#39;, &#39;NC&#39;, &#39;DNS&#39;, &#39;EX&#39;, &#39;WD&#39;].includes(finishPos)) {</span>
-<span class="s2">                finishIdx = finishPositions.indexOf(&#39;DNF&#39;);</span>
-<span class="s2">            } else {</span>
-<span class="s2">                const numFinish = parseInt(finishPos);</span>
-<span class="s2">                if (!isNaN(numFinish)) {</span>
-<span class="s2">                    finishIdx = finishPositions.indexOf(numFinish);</span>
-<span class="s2">                } else {</span>
-<span class="s2">                    finishIdx = finishPositions.indexOf(finishPos);</span>
-<span class="s2">                }</span>
-<span class="s2">            }</span>
-<span class="s2">            </span>
-<span class="s2">            if (finishIdx !== -1) {</span>
-<span class="s2">                matrix[finishIdx][startIdx]++;</span>
-<span class="s2">            }</span>
-<span class="s2">        });</span>
+<span class="c1"># Create a frequency matrix for the heatmap</span>
+<span class="c1"># We&#39;ll consider positions 1-20 for better visualization</span>
+<span class="n">max_pos</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">heatmap_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_pos</span><span class="p">,</span> <span class="n">max_pos</span><span class="p">))</span>
 
-<span class="s2">        return {</span>
-<span class="s2">            matrix,</span>
-<span class="s2">            startPositions,</span>
-<span class="s2">            finishPositions,</span>
-<span class="s2">            titleSuffix,</span>
-<span class="s2">            totalRecords: filteredData.length</span>
-<span class="s2">        };</span>
-<span class="s2">    }</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">start_pos</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span>
+    <span class="n">end_pos</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Only include positions within our range</span>
+    <span class="k">if</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">start_pos</span> <span class="o">&lt;=</span> <span class="n">max_pos</span> <span class="ow">and</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">end_pos</span> <span class="o">&lt;=</span> <span class="n">max_pos</span><span class="p">:</span>
+        <span class="n">heatmap_data</span><span class="p">[</span><span class="n">end_pos</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_pos</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<span class="s2">    // Create Plotly heatmap</span>
-<span class="s2">    function createHeatmap(data, selectedYear = null) {</span>
-<span class="s2">        const { matrix, startPositions, finishPositions, titleSuffix, totalRecords } = createHeatmapData(data, selectedYear);</span>
-<span class="s2">        </span>
-<span class="s2">        const hoverText = matrix.map((row, i) =&gt; </span>
-<span class="s2">            row.map((count, j) =&gt; {</span>
-<span class="s2">                const percentage = totalRecords &gt; 0 ? (count / totalRecords * 100).toFixed(1) : 0;</span>
-<span class="s2">                return `Starting: P$</span><span class="si">{startPositions[j]}</span><span class="s2">&lt;br&gt;Finishing: $</span><span class="si">{finishPositions[i]}</span><span class="s2">&lt;br&gt;Count: $</span><span class="si">{count}</span><span class="s2">&lt;br&gt;Percentage: $</span><span class="si">{percentage}</span><span class="s2">%`;</span>
-<span class="s2">            })</span>
-<span class="s2">        );</span>
+<span class="c1"># Create the heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
-<span class="s2">        const trace = {</span>
-<span class="s2">            z: matrix,</span>
-<span class="s2">            x: startPositions.map(p =&gt; `P$</span><span class="si">{p}</span><span class="s2">`),</span>
-<span class="s2">            y: finishPositions.map(p =&gt; p.toString()),</span>
-<span class="s2">            type: &#39;heatmap&#39;,</span>
-<span class="s2">            colorscale: &#39;RdYlBu&#39;,</span>
-<span class="s2">            reversescale: true,</span>
-<span class="s2">            hoverongaps: false,</span>
-<span class="s2">            hovertemplate: &#39;%</span><span class="si">{customdata}</span><span class="s2">&lt;extra&gt;&lt;/extra&gt;&#39;,</span>
-<span class="s2">            customdata: hoverText,</span>
-<span class="s2">            colorbar: {</span>
-<span class="s2">                title: &quot;Number of Occurrences&quot;</span>
-<span class="s2">            }</span>
-<span class="s2">        };</span>
+<span class="c1"># Linear scale version</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">heatmap_data</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlOrRd&#39;</span><span class="p">,</span> 
+            <span class="n">xticklabels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
+            <span class="n">yticklabels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_pos</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">})</span>
 
-<span class="s2">        const layout = {</span>
-<span class="s2">            title: {</span>
-<span class="s2">                text: `F1 Starting vs Finishing Position Heatmap$</span><span class="si">{titleSuffix}</span><span class="s2">&lt;br&gt;&lt;sub&gt;Total Records: ${totalRecords.toLocaleString()}&lt;/sub&gt;`,</span>
-<span class="s2">                x: 0.5,</span>
-<span class="s2">                font: { size: 16 }</span>
-<span class="s2">            },</span>
-<span class="s2">            xaxis: {</span>
-<span class="s2">                title: &#39;Starting Position&#39;,</span>
-<span class="s2">                side: &#39;bottom&#39;</span>
-<span class="s2">            },</span>
-<span class="s2">            yaxis: {</span>
-<span class="s2">                title: &#39;Finishing Position&#39;,</span>
-<span class="s2">                autorange: &#39;reversed&#39;</span>
-<span class="s2">            },</span>
-<span class="s2">            width: 1000,</span>
-<span class="s2">            height: 700,</span>
-<span class="s2">            font: { size: 12 },</span>
-<span class="s2">            margin: { t: 100, b: 60, l: 80, r: 80 }</span>
-<span class="s2">        };</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;F1 Starting Position vs Finishing Position Heatmap (1994-2022)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Starting Position&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Finishing Position&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
-<span class="s2">        Plotly.newPlot(&#39;heatmap&#39;, [trace], layout, {responsive: true});</span>
-<span class="s2">    }</span>
+<span class="c1"># Add a diagonal line to show where start = finish</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_pos</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_pos</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="s2">    // Update info box</span>
-<span class="s2">    function updateInfo(data, selectedYear) {</span>
-<span class="s2">        const infoBox = document.getElementById(&#39;infoBox&#39;);</span>
-<span class="s2">        let filteredData = data;</span>
-<span class="s2">        </span>
-<span class="s2">        if (selectedYear &amp;&amp; selectedYear !== &#39;total&#39;) {</span>
-<span class="s2">            filteredData = data.filter(d =&gt; d.Year === parseInt(selectedYear));</span>
-<span class="s2">        }</span>
-<span class="s2">        </span>
-<span class="s2">        const recordsCount = filteredData.length;</span>
-<span class="s2">        const racesCount = new Set(filteredData.map(d =&gt; d[&#39;Grand Prix&#39;])).size;</span>
-<span class="s2">        </span>
-<span class="s2">        if (selectedYear === &#39;total&#39;) {</span>
-<span class="s2">            infoBox.innerHTML = `📊 Showing data for ALL YEARS: ${recordsCount.toLocaleString()} total records`;</span>
-<span class="s2">        } else {</span>
-<span class="s2">            infoBox.innerHTML = `📊 Showing data for $</span><span class="si">{selectedYear}</span><span class="s2">: ${recordsCount.toLocaleString()} records from $</span><span class="si">{racesCount}</span><span class="s2"> races`;</span>
-<span class="s2">        }</span>
-<span class="s2">    }</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="s2">    // Initialize when this script runs</span>
-<span class="s2">    (async function() {</span>
-<span class="s2">        const f1Data = await loadF1Data();</span>
-<span class="s2">        </span>
-<span class="s2">        if (f1Data.length === 0) {</span>
-<span class="s2">            document.getElementById(&#39;infoBox&#39;).innerHTML = &#39;❌ Error: Could not load F1 data. Make sure &quot;merged_f1_data_1994_2022.csv&quot; is in the same directory as this notebook.&#39;;</span>
-<span class="s2">            return;</span>
-<span class="s2">        }</span>
-<span class="s2">        </span>
-<span class="s2">        const years = [...new Set(f1Data.map(d =&gt; d.Year))].sort((a, b) =&gt; a - b);</span>
-<span class="s2">        const yearSelect = document.getElementById(&#39;yearSelect&#39;);</span>
-<span class="s2">        </span>
-<span class="s2">        yearSelect.innerHTML = &#39;&lt;option value=&quot;total&quot;&gt;All Years (Total)&lt;/option&gt;&#39;;</span>
-<span class="s2">        </span>
-<span class="s2">        years.forEach(year =&gt; {</span>
-<span class="s2">            const option = document.createElement(&#39;option&#39;);</span>
-<span class="s2">            option.value = year;</span>
-<span class="s2">            option.textContent = year;</span>
-<span class="s2">            yearSelect.appendChild(option);</span>
-<span class="s2">        });</span>
+<span class="c1"># Calculate some interesting statistics</span>
+<span class="n">diagonal_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span> 
+                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_pos</span><span class="p">)</span>
 
-<span class="s2">        yearSelect.addEventListener(&#39;change&#39;, function() {</span>
-<span class="s2">            const selectedYear = this.value;</span>
-<span class="s2">            updateInfo(f1Data, selectedYear);</span>
-<span class="s2">            createHeatmap(f1Data, selectedYear === &#39;total&#39; ? null : selectedYear);</span>
-<span class="s2">        });</span>
-
-<span class="s2">        updateInfo(f1Data, &#39;total&#39;);</span>
-<span class="s2">        createHeatmap(f1Data, null);</span>
-<span class="s2">    })();</span>
-<span class="s2">&lt;/script&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="c1"># Display the HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="n">html_content</span><span class="p">)</span>
+<span class="c1"># Most common position changes</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;position_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">
-<div id="f1-heatmap-container">
-    <style>
-        #f1-heatmap-container {
-            font-family: Arial, sans-serif;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 1200px;
-        }
-        .controls {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-        .controls select {
-            padding: 8px 12px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-left: 10px;
-        }
-        .info-box {
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            border-left: 4px solid #2196f3;
-        }
-        #heatmap {
-            width: 100%;
-            height: 700px;
-        }
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-    </style>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_41012/2923122759.py:16: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
 
-    <h2>🏎️ F1 Starting vs Finishing Position Analysis</h2>
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_clean[&#39;Pos&#39;] = df_clean[&#39;Pos&#39;].astype(int)
+/tmp/ipykernel_41012/2923122759.py:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
 
-    <div class="controls">
-        <label for="yearSelect"><strong>Select Year:</strong></label>
-        <select id="yearSelect">
-            <option value="total">All Years (Total)</option>
-        </select>
-    </div>
-
-    <div id="infoBox" class="info-box">
-        <div class="loading">Loading F1 data...</div>
-    </div>
-
-    <div id="heatmap"></div>
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_clean[&#39;FinPos_numeric&#39;] = df_clean[&#39;FinPos_numeric&#39;].astype(int)
+</pre></div>
 </div>
+<img alt="../_images/912fc327f319d810712865fccd0cf4a87f46f1a0a5b9348853ab7ef5523db3be.png" src="../_images/912fc327f319d810712865fccd0cf4a87f46f1a0a5b9348853ab7ef5523db3be.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_41012/2923122759.py:57: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
-<script>
-    // Parse CSV data
-    function parseCSV(csvText) {
-        const lines = csvText.trim().split('\n');
-        const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-        const data = [];
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_clean[&#39;position_change&#39;] = df_clean[&#39;FinPos_numeric&#39;] - df_clean[&#39;Pos&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
-            if (values.length === headers.length) {
-                const row = {};
-                headers.forEach((header, index) => {
-                    if (header === 'Year' || header === 'Pos') {
-                        row[header] = parseInt(values[index]);
-                    } else {
-                        row[header] = values[index];
-                    }
-                });
-                data.push(row);
-            }
-        }
-        return data;
-    }
-
-    // Load F1 data from CSV file
-    async function loadF1Data() {
-        try {
-            const response = await fetch('merged_f1_data_1994_2022.csv');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const csvText = await response.text();
-            return parseCSV(csvText);
-        } catch (error) {
-            console.error('Error loading F1 data:', error);
-            return [];
-        }
-    }
-
-    // Create heatmap data
-    function createHeatmapData(data, selectedYear = null) {
-        let filteredData = data;
-        let titleSuffix = " - All Years (1994-2022)";
-
-        if (selectedYear && selectedYear !== 'total') {
-            filteredData = data.filter(d => d.Year === parseInt(selectedYear));
-            titleSuffix = ` - ${selectedYear}`;
-        }
-
-        const maxStartPos = Math.max(...filteredData.map(d => d.Pos));
-        const startPositions = Array.from({length: Math.min(maxStartPos, 26)}, (_, i) => i + 1);
-
-        const allFinishPositions = [...new Set(filteredData.map(d => d.FinPos))];
-        const numericPositions = [];
-        const nonNumericPositions = [];
-
-        allFinishPositions.forEach(pos => {
-            const numPos = parseInt(pos);
-            if (!isNaN(numPos) && numPos >= 1 && numPos <= 30) {
-                numericPositions.push(numPos);
-            } else if (pos && pos !== 'nan') {
-                if (['DNF', 'DSQ', 'NC', 'DNS', 'EX', 'WD'].includes(pos)) {
-                    if (!nonNumericPositions.includes('DNF')) {
-                        nonNumericPositions.push('DNF');
-                    }
-                } else {
-                    nonNumericPositions.push(pos);
-                }
-            }
-        });
-
-        const finishPositions = numericPositions.sort((a, b) => a - b).concat(nonNumericPositions.sort());
-
-        const matrix = Array(finishPositions.length).fill().map(() => Array(startPositions.length).fill(0));
-
-        filteredData.forEach(row => {
-            const startIdx = startPositions.indexOf(row.Pos);
-            if (startIdx === -1) return;
-
-            let finishIdx = -1;
-            const finishPos = row.FinPos;
-
-            if (['DNF', 'DSQ', 'NC', 'DNS', 'EX', 'WD'].includes(finishPos)) {
-                finishIdx = finishPositions.indexOf('DNF');
-            } else {
-                const numFinish = parseInt(finishPos);
-                if (!isNaN(numFinish)) {
-                    finishIdx = finishPositions.indexOf(numFinish);
-                } else {
-                    finishIdx = finishPositions.indexOf(finishPos);
-                }
-            }
-
-            if (finishIdx !== -1) {
-                matrix[finishIdx][startIdx]++;
-            }
-        });
-
-        return {
-            matrix,
-            startPositions,
-            finishPositions,
-            titleSuffix,
-            totalRecords: filteredData.length
-        };
-    }
-
-    // Create Plotly heatmap
-    function createHeatmap(data, selectedYear = null) {
-        const { matrix, startPositions, finishPositions, titleSuffix, totalRecords } = createHeatmapData(data, selectedYear);
-
-        const hoverText = matrix.map((row, i) => 
-            row.map((count, j) => {
-                const percentage = totalRecords > 0 ? (count / totalRecords * 100).toFixed(1) : 0;
-                return `Starting: P${startPositions[j]}<br>Finishing: ${finishPositions[i]}<br>Count: ${count}<br>Percentage: ${percentage}%`;
-            })
-        );
-
-        const trace = {
-            z: matrix,
-            x: startPositions.map(p => `P${p}`),
-            y: finishPositions.map(p => p.toString()),
-            type: 'heatmap',
-            colorscale: 'RdYlBu',
-            reversescale: true,
-            hoverongaps: false,
-            hovertemplate: '%{customdata}<extra></extra>',
-            customdata: hoverText,
-            colorbar: {
-                title: "Number of Occurrences"
-            }
-        };
-
-        const layout = {
-            title: {
-                text: `F1 Starting vs Finishing Position Heatmap${titleSuffix}<br><sub>Total Records: ${totalRecords.toLocaleString()}</sub>`,
-                x: 0.5,
-                font: { size: 16 }
-            },
-            xaxis: {
-                title: 'Starting Position',
-                side: 'bottom'
-            },
-            yaxis: {
-                title: 'Finishing Position',
-                autorange: 'reversed'
-            },
-            width: 1000,
-            height: 700,
-            font: { size: 12 },
-            margin: { t: 100, b: 60, l: 80, r: 80 }
-        };
-
-        Plotly.newPlot('heatmap', [trace], layout, {responsive: true});
-    }
-
-    // Update info box
-    function updateInfo(data, selectedYear) {
-        const infoBox = document.getElementById('infoBox');
-        let filteredData = data;
-
-        if (selectedYear && selectedYear !== 'total') {
-            filteredData = data.filter(d => d.Year === parseInt(selectedYear));
-        }
-
-        const recordsCount = filteredData.length;
-        const racesCount = new Set(filteredData.map(d => d['Grand Prix'])).size;
-
-        if (selectedYear === 'total') {
-            infoBox.innerHTML = `📊 Showing data for ALL YEARS: ${recordsCount.toLocaleString()} total records`;
-        } else {
-            infoBox.innerHTML = `📊 Showing data for ${selectedYear}: ${recordsCount.toLocaleString()} records from ${racesCount} races`;
-        }
-    }
-
-    // Initialize when this script runs
-    (async function() {
-        const f1Data = await loadF1Data();
-
-        if (f1Data.length === 0) {
-            document.getElementById('infoBox').innerHTML = '❌ Error: Could not load F1 data. Make sure "merged_f1_data_1994_2022.csv" is in the same directory as this notebook.';
-            return;
-        }
-
-        const years = [...new Set(f1Data.map(d => d.Year))].sort((a, b) => a - b);
-        const yearSelect = document.getElementById('yearSelect');
-
-        yearSelect.innerHTML = '<option value="total">All Years (Total)</option>';
-
-        years.forEach(year => {
-            const option = document.createElement('option');
-            option.value = year;
-            option.textContent = year;
-            yearSelect.appendChild(option);
-        });
-
-        yearSelect.addEventListener('change', function() {
-            const selectedYear = this.value;
-            updateInfo(f1Data, selectedYear);
-            createHeatmap(f1Data, selectedYear === 'total' ? null : selectedYear);
-        });
-
-        updateInfo(f1Data, 'total');
-        createHeatmap(f1Data, null);
-    })();
-</script>
-</div></div>
+<span class="c1"># Create position change visualization</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;position_change&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;No change&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Position Change (Negative = Gained Positions)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of Position Changes in F1 Races (1994-2022)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d37372c24177bb8ad49f12e08d3efecda3ecfbd3db76733a1b616a60678c693d.png" src="../_images/d37372c24177bb8ad49f12e08d3efecda3ecfbd3db76733a1b616a60678c693d.png" />
+</div>
 </div>
 </section>
 
