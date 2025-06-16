@@ -38,6 +38,9 @@ sphinx:
       # This is for plotly to work
       - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     html_theme_options:
-      search_bar_text: ""
-      use_search_button: false
-      show_navbar_depth: 1
+  search_bar_text: ""
+  use_search_button: false
+  show_navbar_depth: 2
+  show_toc_level: 2
+  navigation_with_keys: true
+  use_sidenotes: true
