@@ -332,8 +332,8 @@ document.write(`
 <span class="c1"># Convert FinPos to numeric, treating &#39;NC&#39; as NaN</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
 
-<span class="c1"># Filter out rows where either position is NaN</span>
-<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">,</span> <span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">])</span>
+<span class="c1"># Filter out rows where either position is NaN and create a copy</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">,</span> <span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="c1"># Convert to integers</span>
 <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -375,36 +375,13 @@ document.write(`
 <span class="c1"># Calculate some interesting statistics</span>
 <span class="n">diagonal_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span> 
                     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_pos</span><span class="p">)</span>
-
 <span class="c1"># Most common position changes</span>
 <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;position_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_41012/2923122759.py:16: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df_clean[&#39;Pos&#39;] = df_clean[&#39;Pos&#39;].astype(int)
-/tmp/ipykernel_41012/2923122759.py:17: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df_clean[&#39;FinPos_numeric&#39;] = df_clean[&#39;FinPos_numeric&#39;].astype(int)
-</pre></div>
-</div>
 <img alt="../_images/912fc327f319d810712865fccd0cf4a87f46f1a0a5b9348853ab7ef5523db3be.png" src="../_images/912fc327f319d810712865fccd0cf4a87f46f1a0a5b9348853ab7ef5523db3be.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_41012/2923122759.py:57: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df_clean[&#39;position_change&#39;] = df_clean[&#39;FinPos_numeric&#39;] - df_clean[&#39;Pos&#39;]
-</pre></div>
-</div>
 </div>
 </div>
 <div class="cell docutils container">
