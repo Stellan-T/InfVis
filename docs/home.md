@@ -1,4 +1,5 @@
 # Formule 1 Start vs. Strategie
+Al decennia lang strijden 's werelds beste coureurs voor de wereldtitel in de Formule 1. 
 
 ## Table of contents
 - [Prerequisites](#pre)
