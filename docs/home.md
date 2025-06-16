@@ -1,8 +1,3 @@
----
-jupyterbook:
-  show_toc: false
----
-
 # Formule 1 Start vs. Strategie
 
 ## Table of contents
