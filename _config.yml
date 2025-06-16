@@ -1,8 +1,5 @@
-# Book settings
-# Learn more at https://jupyterbook.org/customize/config.html
-
-title: Jupyter Book Template # Change this to your book title.
-author: Yen-Chia Hsu # Change this to your name (or your team/organization name).
+title: Data Story Project # Change this to your book title.
+author: Stellan CHANGE # Change this to your name (or your team/organization name).
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -40,3 +37,7 @@ sphinx:
     html_js_files:
       # This is for plotly to work
       - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+    html_theme_options:
+      search_bar_text: ""
+      use_search_button: false
+      show_navbar_depth: 1
