@@ -2,7 +2,7 @@
 format: jb-book
 root: docs/home
 chapters:
-- file: docs/dataset
+- file: docs/home
   title: Dataset en preprocessing
 - file: docs/notebook
   title: Start vs. Stops
