@@ -343,9 +343,10 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
-
-<span class="c1"># Ensure offline mode for HTML export</span>
-<span class="n">pyo</span><span class="o">.</span><span class="n">init_notebook_mode</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 
 <span class="c1"># Load and prepare data</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;merged_f1_data_1994_2022.csv&#39;</span><span class="p">)</span>
@@ -369,52 +370,47 @@ document.write(`
 <span class="c1"># Calculate position change (negative = moved forward, positive = moved backward)</span>
 <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Position_Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Pos_numeric&#39;</span><span class="p">]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_position_changes_chart</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create position changes bar chart with professional styling&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_static_position_changes_chart</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create static position changes bar chart for HTML embedding&quot;&quot;&quot;</span>
     
     <span class="c1"># Calculate frequency of each position change</span>
     <span class="n">position_changes</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Position_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
     
-    <span class="c1"># Limit range for better visualization (typically -20 to +20 is sufficient)</span>
+    <span class="c1"># Limit range for better visualization</span>
     <span class="n">position_changes</span> <span class="o">=</span> <span class="n">position_changes</span><span class="p">[(</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">)]</span>
     
-    <span class="c1"># Use consistent red color for all bars (like your original preference)</span>
-    <span class="n">red_color</span> <span class="o">=</span> <span class="s1">&#39;#DC143C&#39;</span>  <span class="c1"># Professional red color</span>
+    <span class="c1"># Use consistent red color</span>
+    <span class="n">red_color</span> <span class="o">=</span> <span class="s1">&#39;#DC143C&#39;</span>
     
-    <span class="c1"># Create the bar chart with improved styling</span>
+    <span class="c1"># Create the bar chart</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="n">position_changes</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
         <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">color</span><span class="o">=</span><span class="n">red_color</span><span class="p">,</span>
-            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;rgba(0,0,0,0)&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>  <span class="c1"># No border for cleaner look</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;rgba(0,0,0,0)&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
             <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
         <span class="p">),</span>
-        <span class="n">hovertemplate</span><span class="o">=</span>
-        <span class="s1">&#39;&lt;b&gt;Position Change:&lt;/b&gt; %</span><span class="si">{x}</span><span class="s1">&lt;br&gt;&#39;</span> <span class="o">+</span>
-        <span class="s1">&#39;&lt;b&gt;Frequency:&lt;/b&gt; %</span><span class="si">{y}</span><span class="s1"> races&lt;br&gt;&#39;</span> <span class="o">+</span>
-        <span class="s1">&#39;&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Position Changes&#39;</span>
     <span class="p">))</span>
     
-    <span class="c1"># Professional layout styling</span>
+    <span class="c1"># Static layout - no interactivity</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="p">{</span>
             <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Verdeling van Positie Veranderingen in F1 Races (1994-2022)&#39;</span><span class="p">,</span>
             <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
             <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="s1">&#39;Inter, -apple-system, sans-serif&#39;</span><span class="p">},</span>
-            <span class="s1">&#39;pad&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+            <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="s1">&#39;Arial, sans-serif&#39;</span><span class="p">},</span>
         <span class="p">},</span>
         
         <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Positie Verandering&#39;</span><span class="p">,</span>
-            <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Inter, sans-serif&#39;</span><span class="p">),</span>
+            <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">),</span>
             <span class="n">tickmode</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
             <span class="n">tick0</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span>
             <span class="n">dtick</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">gridcolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.3)&#39;</span><span class="p">,</span>  <span class="c1"># Subtle grid lines</span>
+            <span class="n">gridcolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.3)&#39;</span><span class="p">,</span>
             <span class="n">gridwidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">),</span>
             <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -423,56 +419,41 @@ document.write(`
             <span class="n">zeroline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">zerolinecolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.8)&#39;</span><span class="p">,</span>
             <span class="n">zerolinewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-            <span class="n">mirror</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">fixedrange</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Disable zoom/pan on x-axis</span>
         <span class="p">),</span>
         
         <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Frequentie&#39;</span><span class="p">,</span>
-            <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Inter, sans-serif&#39;</span><span class="p">),</span>
+            <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">),</span>
             <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">gridcolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.3)&#39;</span><span class="p">,</span>  <span class="c1"># Subtle grid lines</span>
+            <span class="n">gridcolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.3)&#39;</span><span class="p">,</span>
             <span class="n">gridwidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
             <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">),</span>
             <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.5)&#39;</span><span class="p">,</span>
             <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">mirror</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">fixedrange</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Disable zoom/pan on y-axis</span>
         <span class="p">),</span>
         
-        <span class="c1"># Professional dimensions and spacing</span>
-        <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
-        <span class="n">height</span><span class="o">=</span><span class="mi">550</span><span class="p">,</span>
+        <span class="c1"># Fixed dimensions</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
         
         <span class="c1"># Clean background</span>
         <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
-        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s1">&#39;#F8F9FA&#39;</span><span class="p">,</span>  <span class="c1"># Very light gray background</span>
+        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
         
-        <span class="c1"># Better margins for professional appearance</span>
-        <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+        <span class="c1"># Margins</span>
+        <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
         
-        <span class="c1"># Remove default hover mode for cleaner interaction</span>
-        <span class="n">hovermode</span><span class="o">=</span><span class="s1">&#39;x unified&#39;</span><span class="p">,</span>
+        <span class="c1"># Remove all interactivity</span>
+        <span class="n">dragmode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         
         <span class="c1"># Professional font</span>
-        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, sans-serif&quot;</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2C3E50&quot;</span>
-        <span class="p">),</span>
-        
-        <span class="c1"># Add subtle border around the entire plot</span>
-        <span class="n">shapes</span><span class="o">=</span><span class="p">[</span>
-            <span class="nb">dict</span><span class="p">(</span>
-                <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;rect&quot;</span><span class="p">,</span>
-                <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span>
-                <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
-                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;rgba(128, 128, 128, 0.2)&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">]</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;Arial, sans-serif&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2C3E50&quot;</span><span class="p">)</span>
     <span class="p">)</span>
     
-    <span class="c1"># Professional subtitle/annotation</span>
+    <span class="c1"># Add subtitle</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.15</span><span class="p">,</span>
         <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span>
@@ -480,73 +461,33 @@ document.write(`
         <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
         <span class="n">xanchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Coureurs die verder vooraan starten, hebben een duidelijk voordeel bij het behalen van een hoge eindpositie.&#39;</span><span class="p">,</span>
-        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> 
-            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#5D6D7E&#39;</span><span class="p">,</span> 
-            <span class="n">family</span><span class="o">=</span><span class="s1">&#39;Inter, sans-serif&#39;</span><span class="p">,</span>
-            <span class="n">style</span><span class="o">=</span><span class="s1">&#39;italic&#39;</span>
-        <span class="p">)</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#5D6D7E&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;italic&#39;</span><span class="p">)</span>
     <span class="p">)</span>
     
     <span class="k">return</span> <span class="n">fig</span>
 
 <span class="c1"># Create the chart</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">create_position_changes_chart</span><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">create_static_position_changes_chart</span><span class="p">()</span>
 
-<span class="c1"># Enhanced config for better export and interaction</span>
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;modeBarButtonsToRemove&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;pan2d&#39;</span><span class="p">,</span> <span class="s1">&#39;lasso2d&#39;</span><span class="p">,</span> <span class="s1">&#39;select2d&#39;</span><span class="p">,</span> <span class="s1">&#39;autoScale2d&#39;</span><span class="p">,</span> <span class="s1">&#39;resetScale2d&#39;</span>
-    <span class="p">],</span>
-    <span class="s1">&#39;toImageButtonOptions&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;f1_position_changes_professional&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">550</span><span class="p">,</span>
-        <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>
-        <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="mi">3</span>  <span class="c1"># Higher quality export</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;responsive&#39;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="c1"># Static configuration to remove interactivity and make it behave like an embedded image</span>
+<span class="n">static_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>     <span class="c1"># Remove toolbar completely</span>
+    <span class="s1">&#39;staticPlot&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>          <span class="c1"># Make completely static - no zoom, pan, hover</span>
+    <span class="s1">&#39;responsive&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>         <span class="c1"># Fixed size, not responsive</span>
+    <span class="s1">&#39;scrollZoom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>         <span class="c1"># Disable scroll zoom</span>
+    <span class="s1">&#39;doubleClick&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>        <span class="c1"># Disable double-click actions</span>
+    <span class="s1">&#39;showTips&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>           <span class="c1"># Disable tips</span>
+    <span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>        <span class="c1"># Remove Plotly logo</span>
+    <span class="s1">&#39;modeBarButtonsToRemove&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;zoom&#39;</span><span class="p">,</span> <span class="s1">&#39;pan&#39;</span><span class="p">,</span> <span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="s1">&#39;zoomIn&#39;</span><span class="p">,</span> <span class="s1">&#39;zoomOut&#39;</span><span class="p">,</span> <span class="s1">&#39;autoScale&#39;</span><span class="p">,</span> <span class="s1">&#39;resetScale&#39;</span><span class="p">]</span>
 <span class="p">}</span>
 
-<span class="c1"># Show the plot</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="c1"># Display the static plot (will appear like an embedded image in HTML export)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">static_config</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html">        <script type="text/javascript">
-        window.PlotlyConfig = {MathJaxConfig: 'local'};
-        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
-        </script>
-        <script type="module">import "https://cdn.plot.ly/plotly-3.0.1.min"</script>
-        </div><div class="output text_html"><div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="425abb33-181b-4f2d-8cac-010aa4bccd1c" class="plotly-graph-div" style="height:550px; width:900px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("425abb33-181b-4f2d-8cac-010aa4bccd1c")) {                    Plotly.newPlot(                        "425abb33-181b-4f2d-8cac-010aa4bccd1c",                        [{"hovertemplate":"\u003cb\u003ePosition Change:\u003c\u002fb\u003e %{x}\u003cbr\u003e\u003cb\u003eFrequency:\u003c\u002fb\u003e %{y} races\u003cbr\u003e\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#DC143C","line":{"color":"rgba(0,0,0,0)","width":0},"opacity":0.8},"name":"Position Changes","x":{"dtype":"f8","bdata":"AAAAAAAANMAAAAAAAAAzwAAAAAAAADLAAAAAAAAAMcAAAAAAAAAwwAAAAAAAAC7AAAAAAAAALMAAAAAAAAAqwAAAAAAAACjAAAAAAAAAJsAAAAAAAAAkwAAAAAAAACLAAAAAAAAAIMAAAAAAAAAcwAAAAAAAABjAAAAAAAAAFMAAAAAAAAAQwAAAAAAAAAjAAAAAAAAAAMAAAAAAAADwvwAAAAAAAAAAAAAAAAAA8D8AAAAAAAAAQAAAAAAAAAhAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABhAAAAAAAAAHEAAAAAAAAAgQAAAAAAAACJAAAAAAAAAJEAAAAAAAAAmQAAAAAAAAChAAAAAAAAAKkAAAAAAAAAsQAAAAAAAAC5AAAAAAAAAMUA="},"y":{"dtype":"i2","bdata":"AQADAAcACgATABcAKgAqAEoAYACMAJwA3wA0AZMBDAJYAqMCUgP8A4cEmAKbASQBrQCTAFYAQgAiAC4AFQAWABAABwAGAAUABAA="},"type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#343a42","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#343a42","#4edcda","#4c75eb","#ef4de5","#f74e4e","#2d8923","#f7b24e","#2b9694","#3a34b5","#a736a0","#b33c3c","#2d8923"],"font":{"color":"#343a42"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"#E5ECF6","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"#f5f5f5","plot_bgcolor":"rgba(0,0,0,0)","polar":{"angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"title":{"x":0.5},"xaxis":{"automargin":true,"gridcolor":"#cccccc","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"#cccccc","zerolinewidth":1},"yaxis":{"automargin":true,"gridcolor":"#cccccc","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"#cccccc","zerolinewidth":1}}},"title":{"font":{"size":18,"color":"#2C3E50","family":"Inter, -apple-system, sans-serif"},"pad":{"t":20},"text":"Verdeling van Positie Veranderingen in F1 Races (1994-2022)","x":0.5,"xanchor":"center"},"xaxis":{"title":{"text":"Positie Verandering","font":{"size":14,"color":"#2C3E50","family":"Inter, sans-serif"}},"tickfont":{"color":"#2C3E50","size":11},"tickmode":"linear","tick0":-20,"dtick":2,"showgrid":true,"gridcolor":"rgba(128, 128, 128, 0.3)","gridwidth":0.5,"showline":true,"linecolor":"rgba(128, 128, 128, 0.5)","linewidth":1,"zeroline":true,"zerolinecolor":"rgba(128, 128, 128, 0.8)","zerolinewidth":1.5,"mirror":true},"yaxis":{"title":{"text":"Frequentie","font":{"size":14,"color":"#2C3E50","family":"Inter, sans-serif"}},"tickfont":{"color":"#2C3E50","size":11},"showgrid":true,"gridcolor":"rgba(128, 128, 128, 0.3)","gridwidth":0.5,"showline":true,"linecolor":"rgba(128, 128, 128, 0.5)","linewidth":1,"mirror":true},"margin":{"t":80,"l":80,"r":60,"b":100},"font":{"family":"Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif","size":12,"color":"#2C3E50"},"width":900,"height":550,"plot_bgcolor":"white","paper_bgcolor":"#F8F9FA","hovermode":"x unified","shapes":[{"fillcolor":"rgba(0,0,0,0)","line":{"color":"rgba(128, 128, 128, 0.2)","width":1},"type":"rect","x0":0,"x1":1,"xref":"paper","y0":0,"y1":1,"yref":"paper"}],"annotations":[{"align":"center","font":{"color":"#5D6D7E","family":"Inter, sans-serif","size":12,"style":"italic"},"showarrow":false,"text":"Coureurs die verder vooraan starten, hebben een duidelijk voordeel bij het behalen van een hoge eindpositie.","x":0.5,"xanchor":"center","xref":"paper","y":-0.15,"yanchor":"top","yref":"paper"}]},                        {"displayModeBar": true, "displaylogo": false, "modeBarButtonsToRemove": ["pan2d", "lasso2d", "select2d", "autoScale2d", "resetScale2d"], "toImageButtonOptions": {"format": "png", "filename": "f1_position_changes_professional", "height": 550, "width": 900, "scale": 3}, "responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('425abb33-181b-4f2d-8cac-010aa4bccd1c');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script>        </div></div></div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
