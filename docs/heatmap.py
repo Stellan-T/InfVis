@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.offline as pyo
 import plotly.io as pio
-pio.renderers.default = "notebook"
+pio.renderers.default = "browser"
 
 # Ensure offline mode for HTML export
 pyo.init_notebook_mode(connected=True)
