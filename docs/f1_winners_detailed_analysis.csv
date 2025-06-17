@@ -1,0 +1,230 @@
+Year,Grand_Prix,Driver_Code,Starting_Position,Starting_Position_Category,Final_Position
+1994,Belgium,HIL,3,P3,1
+1994,Brazil,MSC,2,P2,1
+1994,Germany,BER,1,P1,1
+1994,Germany,BER,14,Outside Top 3,1
+1994,Germany,BER,24,Outside Top 3,1
+1995,Belgium,MSC,16,Outside Top 3,1
+1995,Brazil,MSC,2,P2,1
+1995,Germany,MSC,2,P2,1
+1996,Belgium,MSC,3,P3,1
+1996,Brazil,HIL,1,P1,1
+1996,Germany,HIL,1,P1,1
+1997,Austria,VIL,1,P1,1
+1997,Belgium,MSC,3,P3,1
+1997,Brazil,VIL,1,P1,1
+1997,Germany,BER,1,P1,1
+1998,Austria,HAK,3,P3,1
+1998,Belgium,HIL,3,P3,1
+1998,Brazil,HAK,1,P1,1
+1998,Germany,HAK,1,P1,1
+1999,Austria,IRV,3,P3,1
+1999,Belgium,COU,2,P2,1
+1999,Brazil,HAK,1,P1,1
+1999,Germany,IRV,5,Outside Top 3,1
+1999,Malaysia,IRV,2,P2,1
+2000,Austria,HAK,1,P1,1
+2000,Belgium,HAK,1,P1,1
+2000,Brazil,MSC,3,P3,1
+2000,Germany,BAR,18,Outside Top 3,1
+2000,Malaysia,MSC,1,P1,1
+2000,USA,MSC,1,P1,1
+2001,Austria,COU,7,Outside Top 3,1
+2001,Belgium,MSC,3,P3,1
+2001,Brazil,COU,5,Outside Top 3,1
+2001,Germany,RSC,2,P2,1
+2001,Malaysia,MSC,1,P1,1
+2001,USA,HAK,4,Outside Top 3,1
+2002,Austria,MSC,3,P3,1
+2002,Belgium,MSC,1,P1,1
+2002,Brazil,MSC,2,P2,1
+2002,Germany,MSC,1,P1,1
+2002,Malaysia,RSC,4,Outside Top 3,1
+2002,USA,BAR,2,P2,1
+2003,Austria,MSC,1,P1,1
+2003,Brazil,FIS,8,Outside Top 3,1
+2003,Germany,MOY,1,P1,1
+2003,Malaysia,RAI,7,Outside Top 3,1
+2003,USA,MSC,7,Outside Top 3,1
+2004,Bahrain,MSC,1,P1,1
+2004,Belgium,RAI,10,Outside Top 3,1
+2004,Brazil,MOY,2,P2,1
+2004,China,BAR,1,P1,1
+2004,Germany,MSC,1,P1,1
+2004,Malaysia,MSC,1,P1,1
+2004,USA,MSC,2,P2,1
+2005,Bahrain,ALO,1,P1,1
+2005,Belgium,RAI,2,P2,1
+2005,Brazil,MOY,2,P2,1
+2005,China,ALO,1,P1,1
+2005,Germany,ALO,3,P3,1
+2005,Malaysia,ALO,1,P1,1
+2005,Turkey,RAI,1,P1,1
+2005,USA,MSC,5,Outside Top 3,1
+2006,Bahrain,ALO,4,Outside Top 3,1
+2006,Brazil,MAS,1,P1,1
+2006,China,MSC,6,Outside Top 3,1
+2006,Germany,MSC,2,P2,1
+2006,Malaysia,FIS,1,P1,1
+2006,Turkey,MAS,1,P1,1
+2006,USA,MSC,1,P1,1
+2007,Bahrain,MAS,1,P1,1
+2007,Belgium,RAI,1,P1,1
+2007,Brazil,RAI,3,P3,1
+2007,China,RAI,2,P2,1
+2007,Malaysia,ALO,2,P2,1
+2007,Turkey,MAS,1,P1,1
+2007,USA,HAM,1,P1,1
+2008,Bahrain,MAS,2,P2,1
+2008,Belgium,MAS,2,P2,1
+2008,Brazil,MAS,1,P1,1
+2008,China,HAM,1,P1,1
+2008,Germany,HAM,1,P1,1
+2008,Malaysia,RAI,2,P2,1
+2008,Singapore,ALO,15,Outside Top 3,1
+2008,Turkey,MAS,1,P1,1
+2009,Abu Dhabi,VET,2,P2,1
+2009,Bahrain,BUT,4,Outside Top 3,1
+2009,Belgium,RAI,6,Outside Top 3,1
+2009,Brazil,WEB,2,P2,1
+2009,China,VET,1,P1,1
+2009,Germany,WEB,1,P1,1
+2009,Malaysia,BUT,1,P1,1
+2009,Singapore,HAM,1,P1,1
+2009,Turkey,BUT,2,P2,1
+2010,Abu Dhabi,VET,1,P1,1
+2010,Bahrain,ALO,3,P3,1
+2010,Belgium,HAM,2,P2,1
+2010,Brazil,VET,2,P2,1
+2010,China,BUT,5,Outside Top 3,1
+2010,Germany,ALO,2,P2,1
+2010,Malaysia,VET,3,P3,1
+2010,Singapore,ALO,1,P1,1
+2010,South Korea,ALO,3,P3,1
+2010,Turkey,HAM,2,P2,1
+2011,Abu Dhabi,HAM,2,P2,1
+2011,Belgium,VET,1,P1,1
+2011,Brazil,WEB,2,P2,1
+2011,China,HAM,3,P3,1
+2011,Germany,HAM,2,P2,1
+2011,India,VET,1,P1,1
+2011,Malaysia,VET,1,P1,1
+2011,Singapore,VET,1,P1,1
+2011,South Korea,VET,2,P2,1
+2011,Turkey,VET,1,P1,1
+2012,Abu Dhabi,RAI,4,Outside Top 3,1
+2012,Bahrain,VET,1,P1,1
+2012,Belgium,BUT,1,P1,1
+2012,Brazil,BUT,2,P2,1
+2012,China,ROS,1,P1,1
+2012,Germany,ALO,1,P1,1
+2012,India,VET,1,P1,1
+2012,Malaysia,ALO,8,Outside Top 3,1
+2012,Singapore,VET,3,P3,1
+2012,South Korea,VET,2,P2,1
+2012,USA,HAM,2,P2,1
+2013,Abu Dhabi,VET,2,P2,1
+2013,Bahrain,VET,2,P2,1
+2013,Belgium,VET,2,P2,1
+2013,Brazil,VET,1,P1,1
+2013,China,ALO,3,P3,1
+2013,Germany,VET,2,P2,1
+2013,India,VET,1,P1,1
+2013,Malaysia,VET,1,P1,1
+2013,Singapore,VET,1,P1,1
+2013,South Korea,VET,1,P1,1
+2013,USA,VET,1,P1,1
+2014,Abu Dhabi,HAM,2,P2,1
+2014,Austria,ROS,3,P3,1
+2014,Bahrain,HAM,2,P2,1
+2014,Belgium,RIC,5,Outside Top 3,1
+2014,Brazil,ROS,1,P1,1
+2014,China,HAM,1,P1,1
+2014,Germany,ROS,1,P1,1
+2014,Malaysia,HAM,1,P1,1
+2014,Russia,HAM,1,P1,1
+2014,Singapore,HAM,1,P1,1
+2014,USA,HAM,2,P2,1
+2015,Abu Dhabi,ROS,1,P1,1
+2015,Austria,ROS,2,P2,1
+2015,Bahrain,HAM,1,P1,1
+2015,Belgium,HAM,1,P1,1
+2015,Brazil,ROS,1,P1,1
+2015,China,HAM,1,P1,1
+2015,Malaysia,VET,2,P2,1
+2015,Russia,HAM,2,P2,1
+2015,Singapore,VET,1,P1,1
+2015,USA,HAM,2,P2,1
+2016,Abu Dhabi,HAM,1,P1,1
+2016,Austria,HAM,1,P1,1
+2016,Bahrain,ROS,2,P2,1
+2016,Belgium,ROS,1,P1,1
+2016,Brazil,HAM,1,P1,1
+2016,China,ROS,1,P1,1
+2016,Germany,HAM,2,P2,1
+2016,Malaysia,RIC,4,Outside Top 3,1
+2016,Russia,ROS,1,P1,1
+2016,Singapore,ROS,1,P1,1
+2016,USA,HAM,1,P1,1
+2017,Abu Dhabi,BOT,1,P1,1
+2017,Austria,BOT,1,P1,1
+2017,Azerbaijan,RIC,10,Outside Top 3,1
+2017,Bahrain,VET,3,P3,1
+2017,Belgium,HAM,1,P1,1
+2017,Brazil,VET,2,P2,1
+2017,China,HAM,1,P1,1
+2017,Malaysia,VER,3,P3,1
+2017,Russia,BOT,3,P3,1
+2017,Singapore,HAM,5,Outside Top 3,1
+2017,USA,HAM,1,P1,1
+2018,Abu Dhabi,HAM,1,P1,1
+2018,Austria,VER,4,Outside Top 3,1
+2018,Azerbaijan,HAM,2,P2,1
+2018,Bahrain,VET,1,P1,1
+2018,Belgium,VET,2,P2,1
+2018,Brazil,HAM,1,P1,1
+2018,China,RIC,6,Outside Top 3,1
+2018,Germany,HAM,14,Outside Top 3,1
+2018,Russia,HAM,2,P2,1
+2018,Singapore,HAM,1,P1,1
+2018,USA,RAI,2,P2,1
+2019,Abu Dhabi,HAM,1,P1,1
+2019,Austria,VER,2,P2,1
+2019,Azerbaijan,BOT,1,P1,1
+2019,Bahrain,HAM,3,P3,1
+2019,Belgium,LEC,1,P1,1
+2019,Brazil,VER,1,P1,1
+2019,China,HAM,2,P2,1
+2019,Germany,VER,2,P2,1
+2019,Russia,HAM,2,P2,1
+2019,Singapore,VET,3,P3,1
+2019,USA,BOT,1,P1,1
+2020,Abu Dhabi,VER,1,P1,1
+2020,Austria,BOT,1,P1,1
+2020,Bahrain,HAM,1,P1,1
+2020,Belgium,HAM,1,P1,1
+2020,Eifel,HAM,2,P2,1
+2020,Russia,BOT,3,P3,1
+2020,Sakhir,PER,5,Outside Top 3,1
+2020,Styria,HAM,1,P1,1
+2020,Turkey,HAM,6,Outside Top 3,1
+2021,Abu Dhabi,VER,1,P1,1
+2021,Austria,VER,1,P1,1
+2021,Azerbaijan,PER,6,Outside Top 3,1
+2021,Bahrain,HAM,2,P2,1
+2021,Belgium,VER,1,P1,1
+2021,Brazil,HAM,10,Outside Top 3,1
+2021,Qatar,HAM,1,P1,1
+2021,Russia,HAM,4,Outside Top 3,1
+2021,Styria,VER,1,P1,1
+2021,Turkey,BOT,1,P1,1
+2021,USA,VER,1,P1,1
+2022,Abu Dhabi,VER,1,P1,1
+2022,Austria,LEC,2,P2,1
+2022,Azerbaijan,VER,3,P3,1
+2022,Bahrain,LEC,1,P1,1
+2022,Belgium,VER,14,Outside Top 3,1
+2022,Brazil,RUS,1,P1,1
+2022,Miami,VER,3,P3,1
+2022,Singapore,PER,2,P2,1
+2022,USA,VER,2,P2,1
