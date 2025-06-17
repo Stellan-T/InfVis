@@ -4,10 +4,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.offline as pyo
 import plotly.io as pio
-pio.renderers.default = "browser"
 
-# Ensure offline mode for HTML export
-pyo.init_notebook_mode(connected=True)
+# Set renderer for direct HTML embedding
+pio.renderers.default = "browser"
 
 # Load and prepare data
 df = pd.read_csv('merged_f1_data_1994_2022.csv')
@@ -259,5 +258,14 @@ config = {
     'scrollZoom': True
 }
 
-# Show the plot
+# Export to standalone HTML file that embeds directly in pages
+fig.write_html(
+    "f1_heatmap_standalone.html",
+    config=config,
+    include_plotlyjs='inline',  # Includes all JS inline - no external dependencies
+    div_id="f1-heatmap",
+    full_html=True
+)
+
+# Also show in notebook
 fig.show(config=config)
