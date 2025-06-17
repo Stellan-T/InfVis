@@ -1,10 +1,10 @@
+# Dataset en preprocessing
 Voor deze analyse gebruikten we drie open source-datasets met officiële Formule 1-gegevens:
-1.	Startposities
+[1.	Startposities]
 Per race bevat deze set de kwalificatie¬klasseringen van alle coureurs.
-2.	Eindresultaten
+[2.	Eindresultaten]
 Hierin staan de uiteindelijke posities, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).
-3.	Pitstopgegevens
-
+[3.	Pitstopgegevens]
 Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd.
 We kozen de periode 1994 tot en met 2022, omdat vanaf 1994 de pitstop gegevens volledig en betrouwbaar beschikbaar zijn. Tijdens de preprocessing brachten we coureursnamen en Grand Prix-benamingen in alle bestanden op één lijn en voegden we de data op basis van Grand Prix, jaar en coureursnaam samen. Zo bevat elke rij zowel startpositie- als pitstop- en resultaatinformatie. 
 
