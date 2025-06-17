@@ -2,8 +2,6 @@
 format: jb-book
 root: docs/home
 chapters:
-- file: docs/home
-  title: Introductie
 - file: docs/dataset
   title: Dataset en preprocessing
 - file: docs/notebook
