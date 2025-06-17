@@ -2,10 +2,13 @@
 format: jb-book
 root: docs/home
 chapters:
+- file: docs/home
+  title: Introductie
+- file: docs/dataset
+  title: Dataset en preprocessing
 - file: docs/notebook
-  title: Het verschil tussen startpositie en strategie
-  sections:
-  - file: docs/analysis
-    title: Data Analyse
-  - file: docs/results
-    title: Resultaten
+  title: Start vs. Stops
+- file: docs/reflectie
+  title: Reflectie
+- file: docs/taak
+  title: Taakverdeling
