@@ -1,36 +1,13 @@
-# Formule 1 Start vs. Strategie
-Al decennia lang strijden 's werelds beste coureurs voor de wereldtitel in de Formule 1. 
+# Formule 1 Start vs. Stops
+De Formule 1 staat wereldwijd bekend als een van de meest intense en strategische sporten. Elke Grand Prix is een samenspel van pure snelheid, technische perfectie en doordachte keuzes, waarbij coureurs en teams voortdurend proberen elkaar te slim af te zijn. In deze data story richten we ons op twee bepalende succesfactoren: de startpositie en de efficiëntie van pitstops.
 
-## Table of contents
-- [Prerequisites](#pre)
-- [1](#s1)
-- [2](#s2)
-- [3](#s2)
-- [4](#s4)
-- [5](#s5)
-- [6](#s5)
-- [7](#s7)
+De startpositie, verkregen via de kwalificaties, bepaalt niet alleen waar een coureur de race aanvangt, maar kan ook directe voordelen opleveren, zoals vrije baan en een verkleinde kans op incidenten in de openingsronden. Tegelijkertijd spelen pitstops een cruciale rol in het verloop van een race. Een goed getimede en snel uitgevoerde pitstop kan posities terugwinnen of verliezen beperken, vooral in races waar strategische keuzes het verschil maken.
 
-## Prerequisites
-<a name="pre"></a>
+Met behulp van data uit de seizoenen 1994 tot en met 2022 analyseren we hoe deze twee elementen – gridpositie en pitstopprestatie – samenhangen met het uiteindelijke race¬resultaat. Daarbij beperken we ons niet tot losse races, maar zoeken we naar patronen die zich over meerdere seizoenen uitstrekken. Het doel is om op een toegankelijke en visuele manier inzicht te geven in wat daadwerkelijk bijdraagt aan succes in de Formule 1. Kennis van de sport is niet vereist: waar nodig lichten we technische termen toe en geven grafieken de data letterlijk kleur.
 
-## 1
-<a name="s1"></a>
 
-## 2
-<a name="s2"></a>
-
-## 3
-<a name="s3"></a>
-
-## 4
-<a name="s4"></a>
-
-## 5
-<a name="s5"></a>
-
-## 6
-<a name="s6"></a>
-
-## 7
-<a name="s7"></a>
+## Authors
+- Stellan Tulfer
+- Taylan Saricaoğlu
+- Jason Schmalschläger
+- Haseeb Shamsul
