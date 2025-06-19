@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Dataset en preprocessing &#8212; Data Story Project</title>
+    <title>Formule 1 Data-analyse: Dataset &amp; Preprocessing &#8212; Data Story Project</title>
   
   
   
@@ -318,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Dataset en preprocessing</h1>
+    <h1>Formule 1 Data-analyse: Dataset & Preprocessing</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -328,8 +328,18 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-methodologie">Preprocessing Methodologie</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -341,31 +351,60 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="dataset-en-preprocessing">
-<h1>Dataset en preprocessing<a class="headerlink" href="#dataset-en-preprocessing" title="Link to this heading">#</a></h1>
-<p>Voor deze analyse gebruikten we vier open source-datasets met officiële Formule 1-gegevens:</p>
-<ol class="arabic simple">
-<li><p>Startposities:
-Per race bevat deze set de kwalificatie¬klasseringen van alle coureurs.</p></li>
-<li><p>Eindresultaten:
-Hierin staan de uiteindelijke posities, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).</p></li>
-<li><p>Pitstopgegevens:
-Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd.</p></li>
-<li><p>Overtakes:
-Per seizoen en per race wordt er gekeken naar de totale hoeveelheid overtakes.</p></li>
-</ol>
-<p>We kozen de periode 1994 tot en met 2022, omdat vanaf 1994 de pitstop gegevens volledig en betrouwbaar beschikbaar zijn.</p>
-<section id="perspective-1-preprocessing">
-<h2>Perspective 1 preprocessing<a class="headerlink" href="#perspective-1-preprocessing" title="Link to this heading">#</a></h2>
-<p>Tijdens de preprocessing brachten we coureursnamen en Grand Prix-benamingen in alle bestanden op één lijn en voegden we de data op basis van Grand Prix, jaar en coureursnaam samen. Zo bevat elke rij zowel startpositie- als pitstop- en resultaatinformatie.</p>
-<p>Vervolgens verwijderden of markeerden we onvolledige of niet-geclassificeerde records (‘NC’ voor Not Classified). Pitstoptijden werden omgezet naar numerieke waarden, zodat we gemiddelden en varianties konden berekenen. We voegden bovendien extra filters toe, zoals op seizoen of circuit, om gerichte analyses mogelijk te maken.
-Alle dataverwerking gebeurde in Python, met behulp van onder andere pandas en numpy. Voor de visualisaties maakten we gebruik van matplotlib en Plotly, zodat we de invloed van startpositie en pitstopstrategie zowel statistisch onderbouwd als visueel overtuigend in kaart konden brengen.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="formule-1-data-analyse-dataset-preprocessing">
+<h1>Formule 1 Data-analyse: Dataset &amp; Preprocessing<a class="headerlink" href="#formule-1-data-analyse-dataset-preprocessing" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p><strong>Project Overview</strong></p>
+<p>Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="dataset-beschrijving">
+<h2>Dataset Beschrijving<a class="headerlink" href="#dataset-beschrijving" title="Link to this heading">#</a></h2>
+<p>Voor deze analyse gebruikten we <strong>vier open source-datasets</strong> met officiële Formule 1-gegevens:</p>
+<section id="startposities">
+<h3>1. Startposities<a class="headerlink" href="#startposities" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Per race bevat deze set de <strong>kwalificatie­klasseringen</strong> van alle coureurs.</p>
+</div></blockquote>
 </section>
+<section id="eindresultaten">
+<h3>2. Eindresultaten<a class="headerlink" href="#eindresultaten" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Hierin staan de <strong>uiteindelijke posities</strong>, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).</p>
+</div></blockquote>
+</section>
+<section id="pitstopgegevens">
+<h3>3. Pitstopgegevens<a class="headerlink" href="#pitstopgegevens" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Per pitstop-actie worden het <strong>tijdstip, de duur</strong> (in seconden) en het aantal stops per coureur geregistreerd.</p>
+</div></blockquote>
+</section>
+<section id="overtakes">
+<h3>4. Overtakes<a class="headerlink" href="#overtakes" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Per seizoen en per race wordt er gekeken naar de <strong>totale hoeveelheid overtakes</strong>.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Tijdsperiode:</strong> We kozen de periode <strong>1994 tot en met 2022</strong>, omdat vanaf 1994 de pitstopgegevens volledig en betrouwbaar beschikbaar zijn.</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="preprocessing-methodologie">
+<h2>Preprocessing Methodologie<a class="headerlink" href="#preprocessing-methodologie" title="Link to this heading">#</a></h2>
+<section id="perspective-1-preprocessing">
+<h3>Perspective 1 preprocessing<a class="headerlink" href="#perspective-1-preprocessing" title="Link to this heading">#</a></h3>
+<p>Tijdens de preprocessing brachten we coureursnamen en Grand Prix-benamingen in alle bestanden op één lijn en voegden we de data op basis van Grand Prix, jaar en coureursnaam samen. Zo bevat elke rij zowel startpositie- als pitstop- en resultaatinformatie.</p>
+<p>Vervolgens verwijderden of markeerden we onvolledige of niet-geclassificeerde records (‘NC’ voor Not Classified). Pitstoptijden werden omgezet naar numerieke waarden, zodat we gemiddelden en varianties konden berekenen. We voegden bovendien extra filters toe, zoals op seizoen of circuit, om gerichte analyses mogelijk te maken.</p>
+<p>Alle dataverwerking gebeurde in Python, met behulp van onder andere pandas en numpy. Voor de visualisaties maakten we gebruik van matplotlib en Plotly, zodat we de invloed van startpositie en pitstopstrategie zowel statistisch onderbouwd als visueel overtuigend in kaart konden brengen.</p>
+</section>
+<hr class="docutils" />
 <section id="perspective-2-preprocessing">
-<h2>Perspective 2 preprocessing<a class="headerlink" href="#perspective-2-preprocessing" title="Link to this heading">#</a></h2>
+<h3>Perspective 2 preprocessing<a class="headerlink" href="#perspective-2-preprocessing" title="Link to this heading">#</a></h3>
 <p>Voor onze analyse combineren we drie open F1-datasets: de startgrid (starting_grids.csv), de race-uitslagen (race_details.csv) en de pitstop-samenvatting (pitstops.csv). Allereerst laden we de bestanden in en beperken we ons tot de seizoenen van 1994 tot en met 2022, zodat we een evenwichtige en vergelijkbare periode bekijken.</p>
 <p>Vervolgens koppelen we elke sessie aan een eenduidige race-ID door de Grand Prix-naam te combineren met het jaartal. Zo kunnen we in één lijn zien wie waar is begonnen, wie waar is geëindigd en hoe lang de pitstops duurden. De grid-bijdrage (‘Pos’) geven we een leesbare naam (start_pos), de eindpositie hetzelfde (end_pos), en de pitstop-duur (Total) zetten we om naar seconden. Eventuele ontbrekende of onleesbare waarden worden weggefilterd, zodat alleen complete records overblijven.</p>
 <p>Tot slot berekenen we per coureur én per race de gemiddelde pitstop-tijd, en zetten we die om in een relatieve score waarbij de snelste stop in elke race 1,0 wordt en langzamere stops een fractie daarvan. Door de start- en eindposities van elkaar af te trekken, krijgen we het aantal gewonnen of verloren plekken. Het resultaat is één compacte tabel met per rij één coureur-racecombinatie: startpositie, eindpositie, gemiddelde pitstoptijd, relatieve pit-score en posities gewonnen. Daarmee hebben we een schone, uniforme basis voor al onze visualisaties.</p>
+</section>
 </section>
 </section>
 
@@ -433,8 +472,18 @@ Alle dataverwerking gebeurde in Python, met behulp van onder andere pandas en nu
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-methodologie">Preprocessing Methodologie</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
