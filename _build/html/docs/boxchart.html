@@ -352,8 +352,8 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.offline</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyo</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
 
 <span class="c1"># Read the CSV file</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;f1_winners_detailed_analysis.csv&#39;</span><span class="p">)</span>
@@ -372,6 +372,7 @@ document.write(`
 <span class="c1"># Add any remaining circuits not in the specified order</span>
 <span class="n">remaining_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">circuit</span> <span class="k">for</span> <span class="n">circuit</span> <span class="ow">in</span> <span class="n">available_circuits</span> <span class="k">if</span> <span class="n">circuit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">circuit_order_filtered</span><span class="p">]</span>
 <span class="n">final_circuit_order</span> <span class="o">=</span> <span class="n">circuit_order_filtered</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">remaining_circuits</span><span class="p">)</span>
+
 <span class="c1"># Count occurrences of each starting position category by circuit</span>
 <span class="n">data_for_chart</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -395,83 +396,207 @@ document.write(`
 
 <span class="n">chart_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_for_chart</span><span class="p">)</span>
 
-<span class="c1"># Define colors for each starting position category</span>
+<span class="c1"># Clean, modern F1 color palette</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;P1&#39;</span><span class="p">:</span> <span class="s2">&quot;#A80000&quot;</span><span class="p">,</span>           <span class="c1"># Dark red</span>
-    <span class="s1">&#39;P2&#39;</span><span class="p">:</span> <span class="s2">&quot;#FF3333&quot;</span><span class="p">,</span>           <span class="c1"># Lighter red</span>
-    <span class="s1">&#39;P3&#39;</span><span class="p">:</span> <span class="s2">&quot;#FF7E7E&quot;</span><span class="p">,</span>           <span class="c1"># Even lighter red</span>
-    <span class="s1">&#39;Outside Top 3&#39;</span><span class="p">:</span> <span class="s2">&quot;#D4D4D4&quot;</span>  <span class="c1"># Gray</span>
+    <span class="s1">&#39;P1&#39;</span><span class="p">:</span> <span class="s1">&#39;#DC143C&#39;</span><span class="p">,</span>           <span class="c1"># Clean F1 red</span>
+    <span class="s1">&#39;P2&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF6B6B&#39;</span><span class="p">,</span>           <span class="c1"># Coral red  </span>
+    <span class="s1">&#39;P3&#39;</span><span class="p">:</span> <span class="s1">&#39;#FFB3B3&#39;</span><span class="p">,</span>           <span class="c1"># Light red</span>
+    <span class="s1">&#39;Outside Top 3&#39;</span><span class="p">:</span> <span class="s1">&#39;#E8E8E8&#39;</span> <span class="c1"># Light gray</span>
 <span class="p">}</span>
 
-<span class="c1"># Create the stacked bar chart</span>
+<span class="c1"># Create a clean, modern chart</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
 
-<span class="c1"># Add bars for each category</span>
-<span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;P3&#39;</span><span class="p">,</span> <span class="s1">&#39;Outside Top 3&#39;</span><span class="p">]:</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">],</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
-        <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
-        <span class="n">text</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
-        <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span>
-        <span class="n">textfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="p">))</span>
+<span class="c1"># Add each category as a separate trace for clean stacking</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Pole Position&#39;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P1&#39;</span><span class="p">],</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;P1&#39;</span><span class="p">],</span>
+    <span class="n">marker_line_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+    <span class="n">marker_line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P1&#39;</span><span class="p">]],</span>
+    <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span>
+    <span class="n">textfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">),</span>
+    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;%</span><span class="si">{x}</span><span class="s1">&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:black&quot;&gt;Pole Position: %</span><span class="si">{y}</span><span class="s1"> wins&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
+<span class="p">))</span>
 
-<span class="c1"># Update layout</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;P2 Start&#39;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">],</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">],</span>
+    <span class="n">marker_line_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+    <span class="n">marker_line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P2&#39;</span><span class="p">]],</span>
+    <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span>
+    <span class="n">textfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">),</span>
+    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;%</span><span class="si">{x}</span><span class="s1">&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:black&quot;&gt;P2 Start: %</span><span class="si">{y}</span><span class="s1"> wins&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
+<span class="p">))</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;P3 Start&#39;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P3&#39;</span><span class="p">],</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;P3&#39;</span><span class="p">],</span>
+    <span class="n">marker_line_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+    <span class="n">marker_line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;P3&#39;</span><span class="p">]],</span>
+    <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span>
+    <span class="n">textfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">),</span>
+    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;%</span><span class="si">{x}</span><span class="s1">&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:black&quot;&gt;P3 Start: %</span><span class="si">{y}</span><span class="s1"> wins&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
+<span class="p">))</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Outside Top 3&#39;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Outside Top 3&#39;</span><span class="p">],</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;Outside Top 3&#39;</span><span class="p">],</span>
+    <span class="n">marker_line_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+    <span class="n">marker_line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">chart_df</span><span class="p">[</span><span class="s1">&#39;Outside Top 3&#39;</span><span class="p">]],</span>
+    <span class="n">textposition</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">,</span>
+    <span class="n">textfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">),</span>  <span class="c1"># Darker text for light gray background</span>
+    <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;%</span><span class="si">{x}</span><span class="s1">&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;color:black&quot;&gt;Outside Top 3: %</span><span class="si">{y}</span><span class="s1"> wins&lt;/span&gt;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
+<span class="p">))</span>
+
+<span class="c1"># Clean, professional layout</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">title</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Win conversie van startposities in de Formule 1 van de top 20 circuits met gemiddeld de meeste overtakes&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">}</span>
-    <span class="p">},</span>
-    <span class="n">xaxis</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Grand Prix Circuit&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;tickangle&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">45</span><span class="p">,</span>
-        <span class="s1">&#39;title_font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">},</span>
-        <span class="s1">&#39;tickfont&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">}</span>
-    <span class="p">},</span>
-    <span class="n">yaxis</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Number of Wins&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;title_font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">},</span>
-        <span class="s1">&#39;tickfont&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">}</span>
-    <span class="p">},</span>
+    <span class="c1"># Remove title for cleaner look</span>
+    <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    
+    <span class="c1"># Clean axes</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Circuit&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">),</span>
+        <span class="n">tickangle</span><span class="o">=-</span><span class="mi">45</span><span class="p">,</span>
+        <span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;#E0E0E0&#39;</span><span class="p">,</span>
+        <span class="n">mirror</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">),</span>
+    
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Race Wins&quot;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">),</span>
+        <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">gridwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">gridcolor</span><span class="o">=</span><span class="s1">&#39;#F5F5F5&#39;</span><span class="p">,</span>
+        <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;#E0E0E0&#39;</span><span class="p">,</span>
+        <span class="n">zeroline</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">),</span>
+    
+    <span class="c1"># Stacked bars</span>
     <span class="n">barmode</span><span class="o">=</span><span class="s1">&#39;stack&#39;</span><span class="p">,</span>
+    
+    <span class="c1"># Clean background</span>
     <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
     <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    
+    <span class="c1"># Optimal sizing</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1400</span><span class="p">,</span>
     <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">120</span><span class="p">),</span>
+    
+    <span class="c1"># Clean margins</span>
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+    
+    <span class="c1"># Modern legend</span>
     <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>
-        <span class="n">yanchor</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span>
-        <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">,</span>
-        <span class="n">xanchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-        <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+        <span class="n">yanchor</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=-</span><span class="mf">0.25</span><span class="p">,</span>
+        <span class="n">xanchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">),</span>
+        <span class="n">bgcolor</span><span class="o">=</span><span class="s1">&#39;rgba(255,255,255,0)&#39;</span><span class="p">,</span>
+        <span class="n">borderwidth</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">),</span>
-    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;Arial, sans-serif&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Modern font</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial, sans-serif&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C2C2C&#39;</span><span class="p">),</span>
+    
+    <span class="c1"># Remove unnecessary elements</span>
+    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    
+    <span class="c1"># Hover settings</span>
+    <span class="n">hoverlabel</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="n">bordercolor</span><span class="o">=</span><span class="s2">&quot;#E0E0E0&quot;</span><span class="p">,</span>
+        <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;Inter, Arial&quot;</span><span class="p">,</span>
+        <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+    <span class="p">)</span>
 <span class="p">)</span>
 
-<span class="c1"># Show the chart</span>
+<span class="c1"># Remove all unnecessary visual clutter</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">showticklabels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">showticklabels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show the clean chart</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="c1"># Also save as HTML for embedding in Jupyter Book</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;f1_starting_positions_bar_chart.html&quot;</span><span class="p">)</span>
+<span class="c1"># Save with clean styling</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;f1_starting_positions_clean.html&quot;</span><span class="p">,</span> 
+               <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+                   <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Remove toolbar for cleaner look</span>
+                   <span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                   <span class="s1">&#39;modeBarButtonsToRemove&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pan2d&#39;</span><span class="p">,</span><span class="s1">&#39;lasso2d&#39;</span><span class="p">]</span>
+               <span class="p">})</span>
+
+<span class="c1"># Clean statistics output</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F1 STARTING POSITION ANALYSIS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
 
 <span class="n">category_totals</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Starting_Position_Category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">total_races</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="n">stats_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;P3&#39;</span><span class="p">,</span> <span class="s1">&#39;Outside Top 3&#39;</span><span class="p">]:</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">category_totals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> wins (</span><span class="si">{</span><span class="n">percentage</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+    <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">total_races</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">stats_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Position&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+        <span class="s1">&#39;Wins&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+        <span class="s1">&#39;Percentage&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">percentage</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span>
+    <span class="p">})</span>
+
+<span class="n">stats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total races: </span><span class="si">{</span><span class="n">total_races</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysis across </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">final_circuit_order</span><span class="p">)</span><span class="si">}</span><span class="s2"> circuits</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># Pole position dominance</span>
+<span class="n">pole_wins</span> <span class="o">=</span> <span class="n">category_totals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">pole_percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">pole_wins</span> <span class="o">/</span> <span class="n">total_races</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Pole position conversion rate: </span><span class="si">{</span><span class="n">pole_percentage</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P1: 109 wins (47.6%)
-P2: 59 wins (25.8%)
-P3: 26 wins (11.4%)
-Outside Top 3: 35 wins (15.3%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
+F1 STARTING POSITION ANALYSIS
+==================================================
+
+Total races: 229
+Analysis across 20 circuits
+
+     Position  Wins Percentage
+           P1   109      47.6%
+           P2    59      25.8%
+           P3    26      11.4%
+Outside Top 3    35      15.3%
+
+Pole position conversion rate: 47.6%
 </pre></div>
 </div>
 </div>
