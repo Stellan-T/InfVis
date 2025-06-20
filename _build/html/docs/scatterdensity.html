@@ -387,6 +387,7 @@ document.write(`
 
 <span class="n">years</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
 
+<span class="c1"># Add scatter plot for all years (initially hidden)</span>
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
     <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;pit_sec&#39;</span><span class="p">],</span>
@@ -414,11 +415,12 @@ document.write(`
             <span class="s1">&#39;Jaar: %</span><span class="si">{customdata[4]}</span><span class="s1">&lt;br&gt;&#39;</span> <span class="o">+</span>
             <span class="s1">&#39;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
         <span class="p">),</span>
-        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Changed to False</span>
         <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;plot_type&#39;</span><span class="p">:</span> <span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">}</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
+<span class="c1"># Add density plot for all years (initially visible)</span>
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
     <span class="n">go</span><span class="o">.</span><span class="n">Histogram2d</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;pit_sec&#39;</span><span class="p">],</span>
@@ -428,14 +430,16 @@ document.write(`
         <span class="n">nbinsy</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Density Alle jaren&#39;</span><span class="p">,</span>
         <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;Pittijd: %</span><span class="si">{x:.1f}</span><span class="s1">s&lt;br&gt;Positieverandering: %</span><span class="si">{y}</span><span class="s1">&lt;br&gt;Aantal: %</span><span class="si">{z}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
-        <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Changed to True</span>
         <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;plot_type&#39;</span><span class="p">:</span> <span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">}</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
+<span class="c1"># Add traces for individual years</span>
 <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
     <span class="n">year_data</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">year</span><span class="p">]</span>
     
+    <span class="c1"># Scatter plot for individual year</span>
     <span class="n">fig_combined</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
         <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="n">year_data</span><span class="p">[</span><span class="s1">&#39;pit_sec&#39;</span><span class="p">],</span>
@@ -467,6 +471,7 @@ document.write(`
         <span class="p">)</span>
     <span class="p">)</span>
     
+    <span class="c1"># Density plot for individual year (not used in slider)</span>
     <span class="n">fig_combined</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
         <span class="n">go</span><span class="o">.</span><span class="n">Histogram2d</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="n">year_data</span><span class="p">[</span><span class="s1">&#39;pit_sec&#39;</span><span class="p">],</span>
@@ -484,8 +489,10 @@ document.write(`
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">add_hline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s2">&quot;dash&quot;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> 
                       <span class="n">annotation_text</span><span class="o">=</span><span class="s2">&quot;Geen positieverandering&quot;</span><span class="p">)</span>
 
+<span class="c1"># Create slider steps only for scatter plots</span>
 <span class="n">slider_steps</span> <span class="o">=</span> <span class="p">[]</span>
 
+<span class="c1"># Add &quot;Alle jaren&quot; step for scatter</span>
 <span class="n">scatter_visibility_all</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">fig_combined</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">trace</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
@@ -502,6 +509,7 @@ document.write(`
     <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span>
 <span class="p">})</span>
 
+<span class="c1"># Add individual year steps for scatter plots only</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">years</span><span class="p">):</span>
     <span class="n">scatter_visibility</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">fig_combined</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
@@ -522,20 +530,6 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">create_plot_type_buttons</span><span class="p">():</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Scatter Plot&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="p">[</span>
-                        <span class="n">trace</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;plot_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;scatter&#39;</span> <span class="ow">and</span> <span class="n">trace</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span>
-                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">trace</span><span class="o">.</span><span class="n">meta</span> <span class="k">else</span> <span class="kc">True</span>
-                        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">fig_combined</span><span class="o">.</span><span class="n">data</span>
-                    <span class="p">]</span>
-                <span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Scatter Plot)&#39;</span><span class="p">}</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
             <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Density Plot&#39;</span><span class="p">,</span>
             <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span>
             <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -546,14 +540,30 @@ document.write(`
                         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">fig_combined</span><span class="o">.</span><span class="n">data</span>
                     <span class="p">]</span>
                 <span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">}</span>
+                <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>  <span class="c1"># Hide slider for density plots</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Scatter Plot&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="n">trace</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;plot_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;scatter&#39;</span> <span class="ow">and</span> <span class="n">trace</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">trace</span><span class="o">.</span><span class="n">meta</span> <span class="k">else</span> <span class="kc">True</span>
+                        <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">fig_combined</span><span class="o">.</span><span class="n">data</span>
+                    <span class="p">]</span>
+                <span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Scatter Plot)&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]}</span>  <span class="c1"># Show slider for scatter plots</span>
             <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">]</span>
 
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
     <span class="n">title</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Scatter Plot)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">,</span>  <span class="c1"># Changed default title</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
         <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">}</span>
@@ -570,6 +580,7 @@ document.write(`
             <span class="s1">&#39;buttons&#39;</span><span class="p">:</span> <span class="n">create_plot_type_buttons</span><span class="p">(),</span>
             <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="s1">&#39;down&#39;</span><span class="p">,</span>
             <span class="s1">&#39;showactive&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Set to 0 since Density Plot is now the first option</span>
             <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
             <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span>
             <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.98</span><span class="p">,</span>
@@ -585,9 +596,11 @@ document.write(`
         <span class="s1">&#39;len&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="n">slider_steps</span>
+        <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="n">slider_steps</span><span class="p">,</span>
+        <span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span>  <span class="c1"># Initially hidden since density plot is default</span>
     <span class="p">}]</span>
 <span class="p">)</span>
+
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
