@@ -352,53 +352,86 @@ document.write(`
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;driver_race_pit_analysis_1994_2022.csv&#39;</span><span class="p">)</span>
 
-<span class="c1"># 1. Bin into 10 deciles of relative pit time</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;pit_decile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;pit_time_pct&quot;</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># 2. Compute mean positions &amp; pit_mid for each decile</span>
 <span class="n">agg</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">df</span>
     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;pit_decile&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-        <span class="n">positions_gained</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;positions_gained&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span>
+        <span class="n">posities_gewonnen</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;positions_gained&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span>
         <span class="n">pit_mid</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;pit_time_pct&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
-<span class="c1"># 3. Scatter+trendline on the agg data</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">agg</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pit_mid&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;positions_gained&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;posities_gewonnen&quot;</span><span class="p">,</span>
     <span class="n">trendline</span><span class="o">=</span><span class="s2">&quot;ols&quot;</span><span class="p">,</span>
-    <span class="n">trendline_color_override</span><span class="o">=</span><span class="s2">&quot;crimson&quot;</span><span class="p">,</span>
+    <span class="n">trendline_color_override</span><span class="o">=</span><span class="s2">&quot;#666666&quot;</span><span class="p">,</span>
     <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;pit_mid&quot;</span><span class="p">:</span>          <span class="s2">&quot;Average Pit Time (relative to fastest = 1.0)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;positions_gained&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean Positions Gained&quot;</span>
+        <span class="s2">&quot;pit_mid&quot;</span><span class="p">:</span>            <span class="s2">&quot;Gemiddelde Pitstop Tijd (relatief t.o.v. snelste = 1.0)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;posities_gewonnen&quot;</span><span class="p">:</span>  <span class="s2">&quot;Gemiddeld Aantal Gewonnen Posities&quot;</span>
     <span class="p">},</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mean Positions Gained by Pit-Time Decile (with Trendline)&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Gemiddeld Aantal Gewonnen Posities per Pitstop-Deciel&quot;</span><span class="p">,</span>
     <span class="n">template</span><span class="o">=</span><span class="s2">&quot;plotly_white&quot;</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
-    <span class="n">height</span><span class="o">=</span><span class="mi">500</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">600</span>
 <span class="p">)</span>
 
-<span class="c1"># 4. Overlay a line connecting the decile means</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Trendlijn&quot;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">showlegend</span> <span class="o">=</span> <span class="kc">True</span>
+
 <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
     <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">agg</span><span class="p">[</span><span class="s2">&quot;pit_mid&quot;</span><span class="p">],</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">agg</span><span class="p">[</span><span class="s2">&quot;positions_gained&quot;</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">agg</span><span class="p">[</span><span class="s2">&quot;posities_gewonnen&quot;</span><span class="p">],</span>
         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
-        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
-        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;steelblue&quot;</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Decile Means&quot;</span>
+        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#B22222&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#8B0000&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Deciel Gemiddelden&quot;</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
-<span class="c1"># 5. Tweak layout for clarity</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickformat</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;LightGrey&quot;</span><span class="p">),</span>
-    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;LightGrey&quot;</span><span class="p">),</span>
-    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s2">&quot;#F5F5F5&quot;</span><span class="p">,</span>
+    
+    <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">tickformat</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> 
+        <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#E0E0E0&quot;</span><span class="p">,</span>
+        <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">),</span>
+        <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#E0E0E0&quot;</span><span class="p">,</span>
+        <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">),</span>
+        <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+
+    <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Arial Black&quot;</span><span class="p">),</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">xanchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+    <span class="p">),</span>
+
+    <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(255,255,255,0.8)&quot;</span><span class="p">,</span>
+        <span class="n">bordercolor</span><span class="o">=</span><span class="s2">&quot;#DC143C&quot;</span><span class="p">,</span>
+        <span class="n">borderwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2F2F2F&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+    
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span>
+    <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#DC143C&quot;</span><span class="p">,</span>
+        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">selector</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
