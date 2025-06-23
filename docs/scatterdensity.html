@@ -415,7 +415,7 @@ document.write(`
             <span class="s1">&#39;Jaar: %</span><span class="si">{customdata[4]}</span><span class="s1">&lt;br&gt;&#39;</span> <span class="o">+</span>
             <span class="s1">&#39;&lt;extra&gt;&lt;/extra&gt;&#39;</span>
         <span class="p">),</span>
-        <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Changed to False</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;plot_type&#39;</span><span class="p">:</span> <span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">}</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -430,7 +430,7 @@ document.write(`
         <span class="n">nbinsy</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Density Alle jaren&#39;</span><span class="p">,</span>
         <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;Pittijd: %</span><span class="si">{x:.1f}</span><span class="s1">s&lt;br&gt;Positieverandering: %</span><span class="si">{y}</span><span class="s1">&lt;br&gt;Aantal: %</span><span class="si">{z}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
-        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Changed to True</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;plot_type&#39;</span><span class="p">:</span> <span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="s1">&#39;all&#39;</span><span class="p">}</span>
     <span class="p">)</span>
 <span class="p">)</span>
@@ -541,7 +541,7 @@ document.write(`
                     <span class="p">]</span>
                 <span class="p">},</span>
                 <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>  <span class="c1"># Hide slider for density plots</span>
+                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}</span>
             <span class="p">]</span>
         <span class="p">},</span>
         <span class="p">{</span>
@@ -556,14 +556,14 @@ document.write(`
                     <span class="p">]</span>
                 <span class="p">},</span>
                 <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Scatter Plot)&#39;</span><span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]}</span>  <span class="c1"># Show slider for scatter plots</span>
+                <span class="p">{</span><span class="s1">&#39;sliders&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]}</span>
             <span class="p">]</span>
         <span class="p">}</span>
     <span class="p">]</span>
 
 <span class="n">fig_combined</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
     <span class="n">title</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">,</span>  <span class="c1"># Changed default title</span>
+        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;F1 Pittijd vs Positieverandering - Alle jaren (1994-2022) (Density Plot)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
         <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">}</span>
@@ -580,7 +580,7 @@ document.write(`
             <span class="s1">&#39;buttons&#39;</span><span class="p">:</span> <span class="n">create_plot_type_buttons</span><span class="p">(),</span>
             <span class="s1">&#39;direction&#39;</span><span class="p">:</span> <span class="s1">&#39;down&#39;</span><span class="p">,</span>
             <span class="s1">&#39;showactive&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Set to 0 since Density Plot is now the first option</span>
+            <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
             <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
             <span class="s1">&#39;xanchor&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span>
             <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.98</span><span class="p">,</span>
@@ -597,7 +597,7 @@ document.write(`
         <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
         <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="n">slider_steps</span><span class="p">,</span>
-        <span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span>  <span class="c1"># Initially hidden since density plot is default</span>
+        <span class="s1">&#39;visible&#39;</span><span class="p">:</span> <span class="kc">False</span>
     <span class="p">}]</span>
 <span class="p">)</span>
 
