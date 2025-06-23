@@ -369,7 +369,7 @@ document.write(`
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pos_numeric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pos&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
 
-<span class="c1"># Extract year from data (adjust column name as needed)</span>
+<span class="c1"># Extract year from data</span>
 <span class="k">if</span> <span class="s1">&#39;Year&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1994</span><span class="p">,</span> <span class="mi">2023</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
 
@@ -381,20 +381,30 @@ document.write(`
     <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="c1"># Calculate position change (negative = moved forward, positive = moved backward)</span>
-<span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Position_Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Pos_numeric&#39;</span><span class="p">]</span>
+<span class="c1"># Calculate position change</span>
+<span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Position_Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Pos_numeric&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;FinPos_numeric&#39;</span><span class="p">]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_static_position_changes_chart</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create static position changes bar chart for HTML embedding&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_interactive_position_changes_chart</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create interactive position changes bar chart with hover data&quot;&quot;&quot;</span>
     
     <span class="c1"># Calculate frequency of each position change</span>
     <span class="n">position_changes</span> <span class="o">=</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;Position_Change&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
     
     <span class="c1"># Limit range for better visualization</span>
     <span class="n">position_changes</span> <span class="o">=</span> <span class="n">position_changes</span><span class="p">[(</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">20</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">)]</span>
-    
-    <span class="c1"># Use consistent red color</span>
     <span class="n">red_color</span> <span class="o">=</span> <span class="s2">&quot;#FF0000&quot;</span>
+    
+    <span class="c1"># Create custom hover text</span>
+    <span class="n">hover_text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pos_change</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">position_changes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">position_changes</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pos_change</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="s2">&quot;No change&quot;</span>
+        <span class="k">elif</span> <span class="n">pos_change</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Gained </span><span class="si">{</span><span class="n">pos_change</span><span class="si">}</span><span class="s2"> positions&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Lost </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">pos_change</span><span class="p">)</span><span class="si">}</span><span class="s2"> positions&quot;</span>
+        
+        <span class="n">hover_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position Change: </span><span class="si">{</span><span class="n">pos_change</span><span class="si">}</span><span class="s2">&lt;br&gt;Frequency: </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&lt;br&gt;</span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     
     <span class="c1"># Create the bar chart</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
@@ -405,10 +415,11 @@ document.write(`
             <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;rgba(0,0,0,0)&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
             <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
         <span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Position Changes&#39;</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Position Changes&#39;</span><span class="p">,</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s1">&#39;%</span><span class="si">{customdata}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;&#39;</span><span class="p">,</span>
+        <span class="n">customdata</span><span class="o">=</span><span class="n">hover_text</span>
     <span class="p">))</span>
     
-    <span class="c1"># Static layout - no interactivity</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="p">{</span>
             <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Verdeling van Positie Veranderingen in F1 Races (1994-2022)&#39;</span><span class="p">,</span>
@@ -432,8 +443,7 @@ document.write(`
             <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">zeroline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">zerolinecolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.8)&#39;</span><span class="p">,</span>
-            <span class="n">zerolinewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-            <span class="n">fixedrange</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Disable zoom/pan on x-axis</span>
+            <span class="n">zerolinewidth</span><span class="o">=</span><span class="mf">1.5</span>
         <span class="p">),</span>
         
         <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -445,8 +455,7 @@ document.write(`
             <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">),</span>
             <span class="n">showline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;rgba(128, 128, 128, 0.5)&#39;</span><span class="p">,</span>
-            <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">fixedrange</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Disable zoom/pan on y-axis</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span>
         <span class="p">),</span>
         
         <span class="c1"># Fixed dimensions</span>
@@ -459,9 +468,6 @@ document.write(`
         
         <span class="c1"># Margins</span>
         <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
-        
-        <span class="c1"># Remove all interactivity</span>
-        <span class="n">dragmode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         
         <span class="c1"># Professional font</span>
         <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s2">&quot;Arial, sans-serif&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2C3E50&quot;</span><span class="p">)</span>
@@ -481,22 +487,19 @@ document.write(`
     <span class="k">return</span> <span class="n">fig</span>
 
 <span class="c1"># Create the chart</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">create_static_position_changes_chart</span><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">create_interactive_position_changes_chart</span><span class="p">()</span>
 
-<span class="c1"># Static configuration to remove interactivity and make it behave like an embedded image</span>
-<span class="n">static_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>     <span class="c1"># Remove toolbar completely</span>
-    <span class="s1">&#39;staticPlot&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>          <span class="c1"># Make completely static - no zoom, pan, hover</span>
-    <span class="s1">&#39;responsive&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>         <span class="c1"># Fixed size, not responsive</span>
-    <span class="s1">&#39;scrollZoom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>         <span class="c1"># Disable scroll zoom</span>
-    <span class="s1">&#39;doubleClick&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>        <span class="c1"># Disable double-click actions</span>
-    <span class="s1">&#39;showTips&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>           <span class="c1"># Disable tips</span>
-    <span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>        <span class="c1"># Remove Plotly logo</span>
-    <span class="s1">&#39;modeBarButtonsToRemove&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;zoom&#39;</span><span class="p">,</span> <span class="s1">&#39;pan&#39;</span><span class="p">,</span> <span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="s1">&#39;zoomIn&#39;</span><span class="p">,</span> <span class="s1">&#39;zoomOut&#39;</span><span class="p">,</span> <span class="s1">&#39;autoScale&#39;</span><span class="p">,</span> <span class="s1">&#39;resetScale&#39;</span><span class="p">]</span>
+<span class="c1"># Interactive config</span>
+<span class="n">interactive_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;displayModeBar&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;responsive&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> 
+    <span class="s1">&#39;scrollZoom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> 
+    <span class="s1">&#39;doubleClick&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;displaylogo&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;showTips&#39;</span><span class="p">:</span> <span class="kc">False</span>
 <span class="p">}</span>
 
-<span class="c1"># Display the static plot (will appear like an embedded image in HTML export)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">static_config</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">interactive_config</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
