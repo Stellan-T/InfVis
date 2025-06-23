@@ -4,12 +4,14 @@ author: Group 41
 
 execute:
   execute_notebooks: force
-
+html:
+  use_issues_button: true
+  use_repository_button: true
+  favicon: docs/favicon.ico
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
     targetname: book.tex
-
 # Information about where the book exists on the web
 repository:
   url: https://github.com/Stellan-T/InfVis # Online location of your book
