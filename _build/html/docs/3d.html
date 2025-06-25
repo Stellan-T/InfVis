@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Formule 1 Data-analyse: Dataset &amp; Preprocessing &#8212; Data Story Project</title>
+    <title>&lt;no title&gt; &#8212; Data Story Project</title>
   
   
   
@@ -57,13 +57,11 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/dataset';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/3d';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Het verschil tussen startpositie en stopstrategie" href="notebook.html" />
-    <link rel="prev" title="Formule 1 Start vs. Stops" href="home.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -126,6 +124,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -173,8 +173,8 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Dataset en preprocessing</a></li>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset en preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebook.html">Het verschil tussen startpositie en stopstrategie</a></li>
 
 
@@ -239,7 +239,7 @@
       
       
       
-      <li><a href="../_sources/docs/dataset.md" target="_blank"
+      <li><a href="../_sources/docs/3d.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -249,7 +249,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -323,7 +323,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Formule 1 Data-analyse: Dataset & Preprocessing</h1>
+    <h1><no title></h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -332,20 +332,9 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+                <ul class="simple visible nav section-nav flex-column">
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-methodologie">Preprocessing Methodologie</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
-</ul>
-</li>
-</ul>
+
             </nav>
         </div>
     </div>
@@ -356,62 +345,77 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="formule-1-data-analyse-dataset-preprocessing">
-<h1>Formule 1 Data-analyse: Dataset &amp; Preprocessing<a class="headerlink" href="#formule-1-data-analyse-dataset-preprocessing" title="Link to this heading">#</a></h1>
-<blockquote>
-<div><p><strong>Project Overview</strong></p>
-<p>Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.</p>
-</div></blockquote>
-<hr class="docutils" />
-<section id="dataset-beschrijving">
-<h2>Dataset Beschrijving<a class="headerlink" href="#dataset-beschrijving" title="Link to this heading">#</a></h2>
-<p>Voor deze analyse gebruikten we <strong>vier open source-datasets</strong> met officiële Formule 1-gegevens:</p>
-<section id="startposities">
-<h3>1. Startposities<a class="headerlink" href="#startposities" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Per race bevat deze set de <strong>kwalificatie­klasseringen</strong> van alle coureurs.</p>
-</div></blockquote>
-</section>
-<section id="eindresultaten">
-<h3>2. Eindresultaten<a class="headerlink" href="#eindresultaten" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Hierin staan de <strong>uiteindelijke posities</strong>, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).</p>
-</div></blockquote>
-</section>
-<section id="pitstopgegevens">
-<h3>3. Pitstopgegevens<a class="headerlink" href="#pitstopgegevens" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Per pitstop-actie worden het <strong>tijdstip, de duur</strong> (in seconden) en het aantal stops per coureur geregistreerd.</p>
-</div></blockquote>
-</section>
-<section id="overtakes">
-<h3>4. Overtakes<a class="headerlink" href="#overtakes" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Per seizoen en per race wordt er gekeken naar de <strong>totale hoeveelheid overtakes</strong>.</p>
-</div></blockquote>
-<blockquote>
-<div><p><strong>Tijdsperiode:</strong> We kozen de periode <strong>1994 tot en met 2022</strong>, omdat vanaf 1994 de pitstopgegevens volledig en betrouwbaar beschikbaar zijn.</p>
-</div></blockquote>
-</section>
-</section>
-<hr class="docutils" />
-<section id="preprocessing-methodologie">
-<h2>Preprocessing Methodologie<a class="headerlink" href="#preprocessing-methodologie" title="Link to this heading">#</a></h2>
-<section id="perspective-1-preprocessing">
-<h3>Perspective 1 preprocessing<a class="headerlink" href="#perspective-1-preprocessing" title="Link to this heading">#</a></h3>
-<p>Tijdens de preprocessing brachten we coureursnamen en Grand Prix-benamingen in alle bestanden op één lijn en voegden we de data op basis van Grand Prix, jaar en coureursnaam samen. Zo bevat elke rij zowel startpositie- als pitstop- en resultaatinformatie.</p>
-<p>Vervolgens verwijderden of markeerden we onvolledige of niet-geclassificeerde records (‘NC’ voor Not Classified). Pitstoptijden werden omgezet naar numerieke waarden, zodat we gemiddelden en varianties konden berekenen. We voegden bovendien extra filters toe, zoals op seizoen of circuit, om gerichte analyses mogelijk te maken.</p>
-<p>Alle dataverwerking gebeurde in Python, met behulp van onder andere pandas en numpy. Voor de visualisaties maakten we gebruik van matplotlib en Plotly, zodat we de invloed van startpositie en pitstopstrategie zowel statistisch onderbouwd als visueel overtuigend in kaart konden brengen.</p>
-</section>
-<hr class="docutils" />
-<section id="perspective-2-preprocessing">
-<h3>Perspective 2 preprocessing<a class="headerlink" href="#perspective-2-preprocessing" title="Link to this heading">#</a></h3>
-<p>Voor onze analyse combineren we drie open F1-datasets: de startgrid (starting_grids.csv), de race-uitslagen (race_details.csv) en de pitstop-samenvatting (pitstops.csv). Allereerst laden we de bestanden in en beperken we ons tot de seizoenen van 1994 tot en met 2022, zodat we een evenwichtige en vergelijkbare periode bekijken.</p>
-<p>Vervolgens koppelen we elke sessie aan een eenduidige race-ID door de Grand Prix-naam te combineren met het jaartal. Zo kunnen we in één lijn zien wie waar is begonnen, wie waar is geëindigd en hoe lang de pitstops duurden. De grid-bijdrage (‘Pos’) geven we een leesbare naam (start_pos), de eindpositie hetzelfde (end_pos), en de pitstop-duur (Total) zetten we om naar seconden. Eventuele ontbrekende of onleesbare waarden worden weggefilterd, zodat alleen complete records overblijven.</p>
-<p>Tot slot berekenen we per coureur én per race de gemiddelde pitstop-tijd, en zetten we die om in een relatieve score waarbij de snelste stop in elke race 1,0 wordt en langzamere stops een fractie daarvan. Door de start- en eindposities van elkaar af te trekken, krijgen we het aantal gewonnen of verloren plekken. Het resultaat is één compacte tabel met per rij één coureur-racecombinatie: startpositie, eindpositie, gemiddelde pitstoptijd, relatieve pit-score en posities gewonnen. Daarmee hebben we een schone, uniforme basis voor al onze visualisaties.</p>
-</section>
-</section>
-</section>
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+
+<span class="c1"># 1. Laad je samengestelde CSV-bestand</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;driver_race_pit_analysis_1994_2022.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Selecteer relevante kolommen en verwijder ontbrekende waarden</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;start_pos&quot;</span><span class="p">,</span> <span class="s2">&quot;pit_time_pct&quot;</span><span class="p">,</span> <span class="s2">&quot;positions_gained&quot;</span><span class="p">])[</span>
+    <span class="p">[</span><span class="s2">&quot;start_pos&quot;</span><span class="p">,</span> <span class="s2">&quot;pit_time_pct&quot;</span><span class="p">,</span> <span class="s2">&quot;positions_gained&quot;</span><span class="p">]</span>
+<span class="p">]</span>
+
+<span class="c1"># 3. Zet startpositie naar gehele getallen</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;start_pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;start_pos&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># 4. Definieer vaste grid: startposities 1 t/m 24 (X), 20 bins pit_time_pct (Y)</span>
+<span class="n">x_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>  <span class="c1"># Startpositie</span>
+<span class="n">y_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;pit_time_pct&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;pit_time_pct&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">y_vals</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># Middens van de pit_time bins</span>
+
+<span class="c1"># 5. Bereken Z: gemiddeld aantal gewonnen posities per (start_pos, pit_bin)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x_vals</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_vals</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_vals</span><span class="p">):</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;start_pos&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">subset</span><span class="p">[</span><span class="s2">&quot;pit_time_pct&quot;</span><span class="p">],</span> <span class="n">y_bins</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_vals</span><span class="p">)):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">inds</span> <span class="o">==</span> <span class="n">j</span><span class="p">,</span> <span class="s2">&quot;positions_gained&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># 6. Maak 3D surface plot, let op: Z moet getransposed worden!</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">x_vals</span><span class="p">,</span>             <span class="c1"># Startpositie</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">y_vals</span><span class="p">,</span>             <span class="c1"># Relatieve pit time</span>
+    <span class="n">z</span><span class="o">=</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>                <span class="c1"># Transpose nodig voor juiste as-toewijzing</span>
+    <span class="n">colorscale</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;indigo&quot;</span><span class="p">],</span>    <span class="c1"># lage waarden (weinig posities gewonnen)</span>
+    <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;violet&quot;</span><span class="p">],</span>    <span class="c1"># middengebied</span>
+    <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">]</span>        <span class="c1"># hoge waarden (veel posities gewonnen)</span>
+    <span class="p">],</span>
+    <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">cmax</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mean Positions</span><span class="se">\n</span><span class="s2">Gained&quot;</span><span class="p">)</span>
+<span class="p">))</span>
+
+<span class="c1"># 7. Layout instellingen</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;3D Surface: Startpositie vs. Relatieve Pitstoptijd vs. Posities Gewonnen&quot;</span><span class="p">,</span>
+    <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Startpositie&quot;</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Pit Time (rel. to fastest = 1.0)&quot;</span><span class="p">,</span>
+        <span class="n">zaxis_title</span><span class="o">=</span><span class="s2">&quot;Mean Posities Gained&quot;</span><span class="p">,</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dtick</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickformat</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">780</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">90</span><span class="p">),</span>
+    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;plotly_white&quot;</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -443,24 +447,6 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="home.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Formule 1 Start vs. Stops</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="notebook.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Het verschil tussen startpositie en stopstrategie</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -476,20 +462,9 @@ document.write(`
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+    <ul class="simple visible nav section-nav flex-column">
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing-methodologie">Preprocessing Methodologie</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-1-preprocessing">Perspective 1 preprocessing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-2-preprocessing">Perspective 2 preprocessing</a></li>
-</ul>
-</li>
-</ul>
+
   </nav></div>
 
 </div></div>
