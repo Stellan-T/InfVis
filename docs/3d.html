@@ -384,16 +384,16 @@ document.write(`
     <span class="n">y</span><span class="o">=</span><span class="n">y_vals</span><span class="p">,</span>             <span class="c1"># Relatieve pit time</span>
     <span class="n">z</span><span class="o">=</span><span class="n">Z</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>                <span class="c1"># Transpose nodig voor juiste as-toewijzing</span>
     <span class="n">colorscale</span><span class="o">=</span><span class="p">[</span>
-    <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;indigo&quot;</span><span class="p">],</span>    <span class="c1"># lage waarden (weinig posities gewonnen)</span>
-    <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;violet&quot;</span><span class="p">],</span>    <span class="c1"># middengebied</span>
-    <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">]</span>        <span class="c1"># hoge waarden (veel posities gewonnen)</span>
+        <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;lightgray&quot;</span><span class="p">],</span>    <span class="c1"># lage waarden (weinig posities gewonnen)</span>
+        <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">],</span>    <span class="c1"># middengebied</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;darkred&quot;</span><span class="p">]</span>        <span class="c1"># hoge waarden (veel posities gewonnen)</span>
     <span class="p">],</span>
     <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">cmax</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
     <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mean Positions</span><span class="se">\n</span><span class="s2">Gained&quot;</span><span class="p">)</span>
 <span class="p">))</span>
 
-<span class="c1"># 7. Layout instellingen</span>
+<span class="c1"># 7. Layout instellingen met camera configuratie</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;3D Surface: Startpositie vs. Relatieve Pitstoptijd vs. Posities Gewonnen&quot;</span><span class="p">,</span>
     <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
@@ -401,7 +401,12 @@ document.write(`
         <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Pit Time (rel. to fastest = 1.0)&quot;</span><span class="p">,</span>
         <span class="n">zaxis_title</span><span class="o">=</span><span class="s2">&quot;Mean Posities Gained&quot;</span><span class="p">,</span>
         <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dtick</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickformat</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">)</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickformat</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">),</span>
+        <span class="n">camera</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">eye</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.7</span><span class="p">),</span>
+            <span class="n">center</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">up</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="p">),</span>
     <span class="n">width</span><span class="o">=</span><span class="mi">780</span><span class="p">,</span>
     <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
