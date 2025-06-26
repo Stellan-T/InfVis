@@ -1,14 +1,15 @@
+<style>
+code {
+    color:rgb(255, 0, 0);
+}
+</style>
 # Formule 1 Data-analyse: Dataset & Preprocessing
-
-> **Project Overview**
-> 
-> Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.
+Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.
 
 ---
-
 ## Dataset Beschrijving
 
-Voor deze analyse gebruikten we **vier open source-datasets** met officiële Formule 1-gegevens:
+Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we **vier open source-datasets** met officiële Formule 1 gegevens: 
 
 ### 1. Startposities
 > Per race bevat deze set de **kwalificatie­klasseringen** van alle coureurs.
@@ -22,26 +23,59 @@ Voor deze analyse gebruikten we **vier open source-datasets** met officiële For
 ### 4. Overtakes
 > Per seizoen en per race wordt er gekeken naar de **totale hoeveelheid overtakes**.
 
-> **Tijdsperiode:** We kozen de periode **1994 tot en met 2022**, omdat vanaf 1994 de pitstopgegevens volledig en betrouwbaar beschikbaar zijn.
+> **Tijdsperiode:** Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar worden vastgelegd, stelden we onze studieperiode in op 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.
 
 ---
+## Harmonisatie en samenvoegen
+Allereerst richtten we ons op het harmoniseren van labels: over alle datasets heen hebben we de coureur- en Grand Prix-benamingen gestandaardiseerd. Vervolgens voegden we de datasets samen met een samengestelde sleutel: (Grand Prix naam + seizoen + coureur). Elk resulterend record bevat vanaf dat moment één rij met:
 
-## Preprocessing Methodologie
+- `Startpositie` uit de kwalificatie
+- `Team- en rondeninformatie` uit de race-uitslag  
+- `Gedetailleerde pitstopdata`
+- `Totaal aantal on-track overtakes`
 
-### Perspective 1 preprocessing
-
-Tijdens de preprocessing brachten we coureursnamen en Grand Prix-benamingen in alle bestanden op één lijn en voegden we de data op basis van Grand Prix, jaar en coureursnaam samen. Zo bevat elke rij zowel startpositie- als pitstop- en resultaatinformatie.
-
-Vervolgens verwijderden of markeerden we onvolledige of niet-geclassificeerde records ('NC' voor Not Classified). Pitstoptijden werden omgezet naar numerieke waarden, zodat we gemiddelden en varianties konden berekenen. We voegden bovendien extra filters toe, zoals op seizoen of circuit, om gerichte analyses mogelijk te maken.
-
-Alle dataverwerking gebeurde in Python, met behulp van onder andere pandas en numpy. Voor de visualisaties maakten we gebruik van matplotlib en Plotly, zodat we de invloed van startpositie en pitstopstrategie zowel statistisch onderbouwd als visueel overtuigend in kaart konden brengen.
+Dankzij deze koppeling is iedere rij een samenhangend overzicht van een race met een unieke ID.
 
 ---
+## Data kwaliteit
+Om de betrouwbaarheid te waarborgen, zochten we actief naar onvolledige of niet-geclassificeerde gevallen (`NC` of `Not Classified`). Zulke records markeerden we of verwijderden we, afhankelijk van de analysebehoefte. Ook zorgden we ervoor dat pitstop-tijden altijd als numerieke seconden werden opgeslagen, zodat we moeiteloos gemiddelden, varianties en relatieve scores konden berekenen. Tot slot implementeerden we parameteriseerbare filters op seizoen en circuit, zodat we eenvoudig subgroepanalyses kunnen uitvoeren.
 
-### Perspective 2 preprocessing
+---
+## Technische implementatie
+De dataverwerking vond volledig in Python plaats, waarin we:
+- `pandas` gebruikten voor het inlezen, hernoemen en samenvoegen van tabellen,
+- `numpy` voor efficiënte numerieke conversies en aggregaties,
+- `functies` bouwden om seizoenen en circuits dynamisch te selecteren,
+- `automatische validatiechecks` toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,
+- `matplotlib` inzetten voor statische visualisaties,
+- `plotly` gebruiken voor interactieve grafieken.
+Deze aanpak garandeert reproduceerbaarheid en maakt het eenvoudig om later nieuwe data in te laden én direct te visualiseren.
 
-Voor onze analyse combineren we drie open F1-datasets: de startgrid (starting_grids.csv), de race-uitslagen (race_details.csv) en de pitstop-samenvatting (pitstops.csv). Allereerst laden we de bestanden in en beperken we ons tot de seizoenen van 1994 tot en met 2022, zodat we een evenwichtige en vergelijkbare periode bekijken.
+---
+## Variabelen van onze dataset
+Ons eindresultaat is één slimme tabel met per coureur–racecombinatie de volgende hoofdvariabelen:
 
-Vervolgens koppelen we elke sessie aan een eenduidige race-ID door de Grand Prix-naam te combineren met het jaartal. Zo kunnen we in één lijn zien wie waar is begonnen, wie waar is geëindigd en hoe lang de pitstops duurden. De grid-bijdrage ('Pos') geven we een leesbare naam (start_pos), de eindpositie hetzelfde (end_pos), en de pitstop-duur (Total) zetten we om naar seconden. Eventuele ontbrekende of onleesbare waarden worden weggefilterd, zodat alleen complete records overblijven.
+- `start_pos`: beginpositie / kwalificatieresultaat
+- `end_pos`: eindpositie na de finish
+- `pitstop_count`: totaal aantal pitstops
+- `pit_avg`: gemiddelde pitstopduur in seconden
+- `pit_rel_score`: relatieve score van pitstoptijd (snelste = 1,0; anderen als fractie)
+- `pos_change`: netto posities gewonnen of verloren
+- `season`
+- `circuit`
 
-Tot slot berekenen we per coureur én per race de gemiddelde pitstop-tijd, en zetten we die om in een relatieve score waarbij de snelste stop in elke race 1,0 wordt en langzamere stops een fractie daarvan. Door de start- en eindposities van elkaar af te trekken, krijgen we het aantal gewonnen of verloren plekken. Het resultaat is één compacte tabel met per rij één coureur-racecombinatie: startpositie, eindpositie, gemiddelde pitstoptijd, relatieve pit-score en posities gewonnen. Daarmee hebben we een schone, uniforme basis voor al onze visualisaties.
+Door al deze gegevens in één overzicht samen te brengen, kunnen we zowel losse verbanden als gecombineerde patronen ontdekken.
+
+---
+## Kernindicatoren
+Op basis van de ruwe data berekenden we twee kernindicatoren:
+
+**1. Relatieve pitstopscore**
+> `Pit_rel_score = pit_avg_driver / min_pit_time_race`
+
+Zo zetten we pitstop-efficiëntie per race om in een eerlijk vergelijkingsmaat.
+
+**2. Netto positieverandering**
+> `Pos_change = start_pos - end_pos`
+
+Positief als een coureur terrein wint, negatief bij verlies. Met deze aggregaten leggen we de basis voor al onze visualisaties.
