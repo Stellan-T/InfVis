@@ -12,16 +12,16 @@ Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de i
 Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we **vier open source-datasets** met officiële Formule 1 gegevens: 
 
 ### 1. Startposities
-> Per race bevat deze set de **kwalificatie­klasseringen** van alle coureurs.
+> Per race bevat deze set de kwalificatie­klasseringen van alle coureurs.
 
 ### 2. Eindresultaten  
-> Hierin staan de **uiteindelijke posities**, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).
+> Hierin staan de uiteindelijke posities, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).
 
 ### 3. Pitstopgegevens
-> Per pitstop-actie worden het **tijdstip, de duur** (in seconden) en het aantal stops per coureur geregistreerd.
+> Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd.
 
 ### 4. Overtakes
-> Per seizoen en per race wordt er gekeken naar de **totale hoeveelheid overtakes**.
+> Per seizoen en per race wordt er gekeken naar de totale hoeveelheid overtakes.
 
 > **Tijdsperiode:** Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar worden vastgelegd, stelden we onze studieperiode in op 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.
 
