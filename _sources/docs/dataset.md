@@ -49,6 +49,7 @@ De dataverwerking vond volledig in Python plaats, waarin we:
 - `automatische validatiechecks` toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,
 - `matplotlib` inzetten voor statische visualisaties,
 - `plotly` gebruiken voor interactieve grafieken.
+
 Deze aanpak garandeert reproduceerbaarheid en maakt het eenvoudig om later nieuwe data in te laden én direct te visualiseren.
 
 ---
