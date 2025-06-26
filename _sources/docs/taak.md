@@ -1,3 +1,8 @@
+<style>
+code {
+    color:rgb(255, 0, 0);
+}
+</style>
 # Taakverdeling
 Om met elkaar in contact te blijven hebben we onder andere een WhatsApp-groep, waarin we actief met elkaar communiceerden over enige progressie en/of vragen. Daarnaast hadden we ongeveer twee keer per week een online-meeting, waarin we met elkaar de stand van zaken bespraken en eventuele vooruitgangen aan elkaar lieten zien. Hierdoor konden we actief feedback blijven geven, waardoor ieder na de meeting zijn eigen gang kon gaan. We besloten op het begin de taken te verdelen op basis van perspectieven, waarbij één iemand ging werken aan de visualisaties van perspectief 1, één iemand aan de visualisaties van perspectief 2 en één iemand aan de tekst. In de werkelijkheid hebben we ons hier niet geheel aan kunnen houden, onder andere aangezien Haseeb pas later in ons groepje is geplaatst, waardoor de taakverdeling wat rommelig werd.
 

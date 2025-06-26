@@ -7,7 +7,7 @@ Tegelijkertijd spelen pitstops een cruciale rol in de momenten waarop posities w
 
 Met data uit de seizoenen 1994–2022 brengen we in kaart hoe gridpositie en pitstop-prestatie samenhangen met het uiteindelijke resultaat. Niet alleen per individuele Grand Prix, maar juist over lange periodes heen zoeken we naar consistente patronen. Het doel is om op een toegankelijke en visuele manier inzicht te geven in wat daadwerkelijk bijdraagt aan succes in de Formule 1. Kennis van de sport is niet vereist: waar nodig lichten we technische termen toe en geven grafieken de data letterlijk kleur.
 
-[Click here to visit the Git Repository](https://github.com/Stellan-T/InfVis)
+[Klik hier voor de Git Repository](https://github.com/Stellan-T/InfVis)
 
 **Authors**
 - Stellan Tulfer
