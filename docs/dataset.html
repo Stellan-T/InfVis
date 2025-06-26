@@ -364,28 +364,28 @@ code {
 <section id="startposities">
 <h3>1. Startposities<a class="headerlink" href="#startposities" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per race bevat deze set de kwalificatie­klasseringen van alle coureurs.</p>
+<div><p>Per Grand Prix, per jaar bevat deze set de kwalificatie­klasseringen van alle coureurs.</p>
 </div></blockquote>
 </section>
 <section id="eindresultaten">
 <h3>2. Eindresultaten<a class="headerlink" href="#eindresultaten" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Hierin staan de uiteindelijke posities, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS).</p>
+<div><p>Hierin staan de eindposities per Grand Prix en per jaar, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS, DSQ of NC).</p>
 </div></blockquote>
 </section>
 <section id="pitstopgegevens">
 <h3>3. Pitstopgegevens<a class="headerlink" href="#pitstopgegevens" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd.</p>
+<div><p>Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd. Dit gebeurt ook per Grand Prix en per jaar.</p>
 </div></blockquote>
 </section>
 <section id="overtakes">
 <h3>4. Overtakes<a class="headerlink" href="#overtakes" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per seizoen en per race wordt er gekeken naar de totale hoeveelheid overtakes.</p>
+<div><p>Per seizoen en per Grand Prix wordt er gekeken naar de totale hoeveelheid overtakes.</p>
 </div></blockquote>
 <blockquote>
-<div><p><strong>Tijdsperiode:</strong> Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar worden vastgelegd, stelden we onze studieperiode in op 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.</p>
+<div><p><strong>Tijdsperiode:</strong> Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar zijn vastgelegd, legden we onze focus op de periode 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.</p>
 </div></blockquote>
 </section>
 </section>
@@ -404,7 +404,7 @@ code {
 <hr class="docutils" />
 <section id="data-kwaliteit">
 <h2>Data kwaliteit<a class="headerlink" href="#data-kwaliteit" title="Link to this heading">#</a></h2>
-<p>Om de betrouwbaarheid te waarborgen, zochten we actief naar onvolledige of niet-geclassificeerde gevallen (<code class="docutils literal notranslate"><span class="pre">NC</span></code> of <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Classified</span></code>). Zulke records markeerden we of verwijderden we, afhankelijk van de analysebehoefte. Ook zorgden we ervoor dat pitstop-tijden altijd als numerieke seconden werden opgeslagen, zodat we moeiteloos gemiddelden, varianties en relatieve scores konden berekenen. Tot slot implementeerden we parameteriseerbare filters op seizoen en circuit, zodat we eenvoudig subgroepanalyses kunnen uitvoeren.</p>
+<p>Om de betrouwbaarheid te waarborgen, zochten we actief naar onvolledige of niet-geclassificeerde gevallen (<code class="docutils literal notranslate"><span class="pre">NC</span></code> of <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">Classified</span></code>). Zulke records markeerden we of verwijderden we, afhankelijk van de analysebehoefte. Ook zorgden we ervoor dat pitstop-tijden altijd als numerieke seconden werden opgeslagen, zodat we moeiteloos gemiddelden, variaties en relatieve scores konden berekenen. Tot slot implementeerden we parameteriseerbare filters op seizoen en circuit, zodat we eenvoudig subgroepanalyses kunnen uitvoeren.</p>
 </section>
 <hr class="docutils" />
 <section id="technische-implementatie">
@@ -429,7 +429,7 @@ code {
 <li><p><code class="docutils literal notranslate"><span class="pre">end_pos</span></code>: eindpositie na de finish</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pitstop_count</span></code>: totaal aantal pitstops</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pit_avg</span></code>: gemiddelde pitstopduur in seconden</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pit_rel_score</span></code>: relatieve score van pitstoptijd (snelste = 1,0; anderen als fractie)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pit_rel_score</span></code>: relatieve score van pitstoptijd (snelste = 1.0; anderen als fractie)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pos_change</span></code>: netto posities gewonnen of verloren</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">season</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">circuit</span></code></p></li>
