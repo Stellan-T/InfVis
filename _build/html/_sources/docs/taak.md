@@ -8,7 +8,7 @@ Om met elkaar in contact te blijven hebben we onder andere een WhatsApp-groep, w
 
 ---
 ### Stellan
-Stellan heeft zich beziggehouden met het organiseren van de git-hub pages/repository en het design hiervan, het coderen van de meeste visualisaties en het finaliseren van de git-hub pages en de tekst samen met `Taylan`. Stellan heeft zich gericht op het coderen van visualisaties 1, 2, 3, 6 en het laatste deel van visualisatie 4. Daarnaast heeft hij ook gewerkt aan de tekst voor de draft-versie. Bovendien heeft hij de taakverdeling geschreven en een deel van de peer-feedback presentatie gedaan.
+Stellan heeft zich beziggehouden met het organiseren van de git-hub pages/repository en het design hiervan, het coderen van de meeste visualisaties en het finaliseren van de git-hub pages en de tekst samen met `Taylan`. Stellan heeft zich gericht op het coderen van visualisaties 1, 2, 3, 6 en het laatste deel van visualisatie 4. Daarnaast heeft hij ook gewerkt aan de tekst voor de draft-versie. Bovendien heeft hij de taakverdeling geschreven en een deel van de peer-feedback presentatie gedaan. Stellan nam voornamelijk eht initiatief om meetings te organiseren, mensen op de hoogte te houden en het samenbrengen van de individuele stukken.
 ### Taylan
 Taylan heeft zich voornamelijk beziggehouden met het schrijven van de tekst. Hierbij heeft hij zich gefocust op het "story" gedeelte van de data-story. Hij zorgde ervoor dat er een mooi verhaal uitkwam, waardoor er een duidelijke rode draad was. Daarnaast heeft Taylan ook een deel van de peer-feedback presentatie gedaan en heeft hij het logo gemaakt wat te zien is op de pagina. Taylan heeft op het einde nog geholpen met het finaliseren van de git-hub pages samen met `Stellan`.
 ### Jason
