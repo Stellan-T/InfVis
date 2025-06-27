@@ -327,10 +327,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startpositie">1. Startpositie</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-grid-csv">1. starting_grid.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#race-details-csv">2. race_details.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstops-csv">3. pitstops.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-overtaking-data-csv">4. f1_overtaking_data.csv</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonisatie-en-samenvoegen">Harmonisatie en samenvoegen</a></li>
@@ -362,28 +362,28 @@ code {
 <section id="dataset-beschrijving">
 <h2>Dataset Beschrijving<a class="headerlink" href="#dataset-beschrijving" title="Link to this heading">#</a></h2>
 <p>Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we <strong>vier open source-datasets</strong> met officiële Formule 1 gegevens (Debashish, 2023; F1 Overtaking Data, 2022):</p>
-<section id="startpositie">
-<h3>1. Startpositie<a class="headerlink" href="#startpositie" title="Link to this heading">#</a></h3>
+<section id="starting-grid-csv">
+<h3>1. starting_grid.csv<a class="headerlink" href="#starting-grid-csv" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per Grand Prix, per jaar bevat deze set de kwalificatie­klasseringen van alle coureurs.</p>
+<div><p>Deze dataset bevat per Grand Prix, per jaar de startposities van elke coureur.</p>
 </div></blockquote>
 </section>
-<section id="eindresultaten">
-<h3>2. Eindresultaten<a class="headerlink" href="#eindresultaten" title="Link to this heading">#</a></h3>
+<section id="race-details-csv">
+<h3>2. race_details.csv<a class="headerlink" href="#race-details-csv" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Hierin staan de eindposities per Grand Prix en per jaar, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS, DSQ of NC).</p>
+<div><p>Deze dataset bevat uitgebreide informatie over het verloop van elke Grand Prix, per jaar, waaronder de eindposities, het aantal voltooide ronden en de uitval redenen: DNF (Did Not Finish), DNS (Did Not Start), DSQ (Disqualified) of NC (Not Classified).</p>
 </div></blockquote>
 </section>
-<section id="pitstopgegevens">
-<h3>3. Pitstopgegevens<a class="headerlink" href="#pitstopgegevens" title="Link to this heading">#</a></h3>
+<section id="pitstops-csv">
+<h3>3. pitstops.csv<a class="headerlink" href="#pitstops-csv" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd. Dit gebeurt ook per Grand Prix en per jaar.</p>
+<div><p>Deze dataset bevat alle informatie rondom de pitstops, waaronder het tijdstip en de duur (in seconden) per pitstop-actie en het totale aantal stops per coureur. Dit gebeurt ook per Grand Prix en per jaar.</p>
 </div></blockquote>
 </section>
-<section id="overtakes">
-<h3>4. Overtakes<a class="headerlink" href="#overtakes" title="Link to this heading">#</a></h3>
+<section id="f1-overtaking-data-csv">
+<h3>4. f1_overtaking_data.csv<a class="headerlink" href="#f1-overtaking-data-csv" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Per seizoen en per Grand Prix wordt er gekeken naar de totale hoeveelheid overtakes.</p>
+<div><p>Deze dataset bevat per Grand Prix en per jaar informatie over de totale hoeveelheid inhaalacties.</p>
 </div></blockquote>
 <blockquote>
 <div><p><strong>Tijdsperiode:</strong> Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar zijn vastgelegd, legden we onze focus op de periode 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.</p>
@@ -413,7 +413,7 @@ code {
 <p>De dataverwerking vond volledig in Python plaats, waarin we:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> gebruikten voor het inlezen, hernoemen en samenvoegen van tabellen,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> voor efficiënte numerieke conversies en aggregaties,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> gebruikten voor efficiënte numerieke conversies en aggregaties,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">functies</span></code> bouwden om seizoenen en circuits dynamisch te selecteren,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">automatische</span> <span class="pre">validatiechecks</span></code> toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> inzetten voor statische visualisaties,</p></li>
@@ -527,10 +527,10 @@ code {
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startpositie">1. Startpositie</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-grid-csv">1. starting_grid.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#race-details-csv">2. race_details.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstops-csv">3. pitstops.csv</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-overtaking-data-csv">4. f1_overtaking_data.csv</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonisatie-en-samenvoegen">Harmonisatie en samenvoegen</a></li>

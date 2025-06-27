@@ -11,17 +11,17 @@ Een diepgaande data-analyse van Formule 1 prestaties tussen 1994-2022, waarbij v
 
 Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we **vier open source-datasets** met officiële Formule 1 gegevens (Debashish, 2023; F1 Overtaking Data, 2022): 
 
-### 1. Startpositie
-> Per Grand Prix, per jaar bevat deze set de kwalificatie­klasseringen van alle coureurs.
+### 1. starting_grid.csv
+> Deze dataset bevat per Grand Prix, per jaar de startposities van elke coureur.
 
-### 2. Eindresultaten  
-> Hierin staan de eindposities per Grand Prix en per jaar, het team, het aantal voltooide ronden en de uitval redenen (DNF, DNS, DSQ of NC).
+### 2. race_details.csv
+> Deze dataset bevat uitgebreide informatie over het verloop van elke Grand Prix, per jaar, waaronder de eindposities, het aantal voltooide ronden en de uitval redenen: DNF (Did Not Finish), DNS (Did Not Start), DSQ (Disqualified) of NC (Not Classified).
 
-### 3. Pitstopgegevens
-> Per pitstop-actie worden het tijdstip, de duur (in seconden) en het aantal stops per coureur geregistreerd. Dit gebeurt ook per Grand Prix en per jaar.
+### 3. pitstops.csv
+> Deze dataset bevat alle informatie rondom de pitstops, waaronder het tijdstip en de duur (in seconden) per pitstop-actie en het totale aantal stops per coureur. Dit gebeurt ook per Grand Prix en per jaar.
 
-### 4. Overtakes
-> Per seizoen en per Grand Prix wordt er gekeken naar de totale hoeveelheid overtakes.
+### 4. f1_overtaking_data.csv
+> Deze dataset bevat per Grand Prix en per jaar informatie over de totale hoeveelheid inhaalacties.
 
 > **Tijdsperiode:** Omdat pitstopgegevens pas vanaf 1994 volledig en betrouwbaar zijn vastgelegd, legden we onze focus op de periode 1994–2022. Zo ontstaat een grote, consistente dataset van bijna drie decennia Formule 1-geschiedenis, waarin zowel dominante seizoenen als strategisch spannende periodes zijn vertegenwoordigd.
 
@@ -44,7 +44,7 @@ Om de betrouwbaarheid te waarborgen, zochten we actief naar onvolledige of niet-
 ## Technische implementatie
 De dataverwerking vond volledig in Python plaats, waarin we:
 - `pandas` gebruikten voor het inlezen, hernoemen en samenvoegen van tabellen,
-- `numpy` voor efficiënte numerieke conversies en aggregaties,
+- `numpy` gebruikten voor efficiënte numerieke conversies en aggregaties,
 - `functies` bouwden om seizoenen en circuits dynamisch te selecteren,
 - `automatische validatiechecks` toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,
 - `matplotlib` inzetten voor statische visualisaties,
