@@ -4,14 +4,14 @@ code {
 }
 </style>
 # Formule 1 Data-analyse: Dataset & Preprocessing
-Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.
+Een diepgaande data-analyse van Formule 1 prestaties tussen 1994-2022, waarbij vier datasets zijn gecombineerd om de invloed van startposities en pitstopstrategieën op race-uitslagen te onderzoeken.
 
 ---
 ## Dataset Beschrijving
 
-Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we **vier open source-datasets** met officiële Formule 1 gegevens: 
+Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we **vier open source-datasets** met officiële Formule 1 gegevens (Debashish, 2023; F1 Overtaking Data, 2022): 
 
-### 1. Startposities
+### 1. Startpositie
 > Per Grand Prix, per jaar bevat deze set de kwalificatie­klasseringen van alle coureurs.
 
 ### 2. Eindresultaten  
@@ -27,7 +27,7 @@ Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultat
 
 ---
 ## Harmonisatie en samenvoegen
-Allereerst richtten we ons op het harmoniseren van labels: over alle datasets heen hebben we de coureur- en Grand Prix-benamingen gestandaardiseerd. Vervolgens voegden we de datasets samen met een samengestelde sleutel: (Grand Prix naam + seizoen + coureur). Elk resulterend record bevat vanaf dat moment één rij met:
+Allereerst richtten we ons op het harmoniseren van labels: over alle datasets heen hebben we de coureur- en Grand Prix-benamingen gestandaardiseerd. Vervolgens voegden we de datasets samen met een samengestelde sleutel: (Grand Prix naam + seizoen + coureur). Elk resulterend record bevat vanaf dat moment een rij met:
 
 - `Startpositie` uit de kwalificatie
 - `Team- en rondeninformatie` uit de race-uitslag  
@@ -48,17 +48,18 @@ De dataverwerking vond volledig in Python plaats, waarin we:
 - `functies` bouwden om seizoenen en circuits dynamisch te selecteren,
 - `automatische validatiechecks` toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,
 - `matplotlib` inzetten voor statische visualisaties,
-- `plotly` gebruiken voor interactieve grafieken.
+- `plotly` gebruikten voor interactieve grafieken.
 
 Deze aanpak garandeert reproduceerbaarheid en maakt het eenvoudig om later nieuwe data in te laden én direct te visualiseren.
 
 ---
 ## Variabelen van onze dataset
-Ons eindresultaat is één slimme tabel met per coureur–racecombinatie de volgende hoofdvariabelen:
+Ons eindresultaat zijn slimme samengestelde datasets met per coureur–racecombinatie de volgende hoofdvariabelen, afhankelijk van de functie of visualisatie die werd gemaakt:
 
 - `start_pos`: beginpositie / kwalificatieresultaat
 - `end_pos`: eindpositie na de finish
 - `pitstop_count`: totaal aantal pitstops
+- `pit_time`: totale pitstopduur in seconden
 - `pit_avg`: gemiddelde pitstopduur in seconden
 - `pit_rel_score`: relatieve score van pitstoptijd (snelste = 1.0; anderen als fractie)
 - `pos_change`: netto posities gewonnen of verloren
@@ -80,3 +81,7 @@ Zo zetten we pitstop-efficiëntie per race om in een eerlijk vergelijkingsmaat.
 > `Pos_change = start_pos - end_pos`
 
 Positief als een coureur terrein wint, negatief bij verlies. Met deze aggregaten leggen we de basis voor al onze visualisaties.
+
+## Referenties
+1. Debashish, R. (2023). Formula 1 Official Data 1950–2022. https://www.kaggle.com/datasets/debashish311601/formula-1-official-data-19502022
+2. F1 overtaking data [Data set]. (2022). Google Sheets. https://docs.google.com/spreadsheets/d/1XueNI7ZawEX0RLDq5dAGVqsEb1-DBOK2kUWGwM1OMKs/edit?gid=0#gid=0
