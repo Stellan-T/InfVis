@@ -12,6 +12,6 @@ Stellan heeft zich beziggehouden met het organiseren van de git-hub pages/reposi
 ### Taylan
 Taylan heeft zich voornamelijk beziggehouden met het schrijven van de tekst. Hierbij heeft hij zich gefocust op het "story" gedeelte van de data-story. Hij zorgde ervoor dat er een mooi verhaal uitkwam, waardoor er een duidelijke rode draad was. Daarnaast heeft Taylan ook een deel van de peer-feedback presentatie gedaan en heeft hij het logo gemaakt wat te zien is op de pagina. Taylan heeft op het einde nog geholpen met het finaliseren van de git-hub pages samen met `Stellan`.
 ### Jason
-Jason heeft zich beziggehouden met het maken van visualisaties. Hij heeft de basis gecodeerd voor visualisatie 4 en geheel visualisatie 5 en 7 gemaakt. Daarnaast heeft hij geholpen met de tekst voor de draft-versie die we hebben ingeleverd. Ook Jason heeft een deel gepresenteerd van de peer-feedback presentatie.
+Jason heeft zich beziggehouden met het maken van visualisaties. Hij heeft de basis gecodeerd voor visualisatie 4 en visualisatie 5 en 7 gemaakt. Daarnaast heeft hij geholpen met de tekst voor de draft-versie die we hebben ingeleverd. Ook Jason heeft een deel gepresenteerd van de peer-feedback presentatie.
 ### Haseeb
 Haseeb heeft zich beziggehouden met een deel van de tekst voor te bereiden voor de draft-versie. Daarnaast heeft Haseeb wetenschappelijke artikelen gevonden om onze argumenten mee te onderbouwen.
