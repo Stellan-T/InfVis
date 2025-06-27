@@ -11,7 +11,7 @@ Met data uit de seizoenen 1994–2022 brengen we in kaart hoe gridpositie en pit
 
 [Klik hier voor de Git Repository](https://github.com/Stellan-T/InfVis)
 
-**Authors**
+**Auteurs**
 - Stellan Tulfer
 - Taylan Saricaoğlu
 - Jason Schmalschläger

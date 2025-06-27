@@ -327,7 +327,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startpositie">1. Startpositie</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
@@ -338,6 +338,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technische-implementatie">Technische implementatie</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variabelen-van-onze-dataset">Variabelen van onze dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernindicatoren">Kernindicatoren</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referenties">Referenties</a></li>
 </ul>
             </nav>
         </div>
@@ -356,13 +357,13 @@ code {
 </style>
 <section class="tex2jax_ignore mathjax_ignore" id="formule-1-data-analyse-dataset-preprocessing">
 <h1>Formule 1 Data-analyse: Dataset &amp; Preprocessing<a class="headerlink" href="#formule-1-data-analyse-dataset-preprocessing" title="Link to this heading">#</a></h1>
-<p>Een diepgaande analyse van Formule 1 prestaties van 1994-2022, met focus op de invloed van startposities en pitstopstrategieën op raceresultaten.</p>
+<p>Een diepgaande data-analyse van Formule 1 prestaties tussen 1994-2022, waarbij vier datasets zijn gecombineerd om de invloed van startposities en pitstopstrategieën op race-uitslagen te onderzoeken.</p>
 <hr class="docutils" />
 <section id="dataset-beschrijving">
 <h2>Dataset Beschrijving<a class="headerlink" href="#dataset-beschrijving" title="Link to this heading">#</a></h2>
-<p>Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we <strong>vier open source-datasets</strong> met officiële Formule 1 gegevens:</p>
-<section id="startposities">
-<h3>1. Startposities<a class="headerlink" href="#startposities" title="Link to this heading">#</a></h3>
+<p>Voor een robuuste analyse van startposities, pitstopstrategieën en eindresultaten combineerden we <strong>vier open source-datasets</strong> met officiële Formule 1 gegevens (Debashish, 2023; F1 Overtaking Data, 2022):</p>
+<section id="startpositie">
+<h3>1. Startpositie<a class="headerlink" href="#startpositie" title="Link to this heading">#</a></h3>
 <blockquote>
 <div><p>Per Grand Prix, per jaar bevat deze set de kwalificatie­klasseringen van alle coureurs.</p>
 </div></blockquote>
@@ -392,7 +393,7 @@ code {
 <hr class="docutils" />
 <section id="harmonisatie-en-samenvoegen">
 <h2>Harmonisatie en samenvoegen<a class="headerlink" href="#harmonisatie-en-samenvoegen" title="Link to this heading">#</a></h2>
-<p>Allereerst richtten we ons op het harmoniseren van labels: over alle datasets heen hebben we de coureur- en Grand Prix-benamingen gestandaardiseerd. Vervolgens voegden we de datasets samen met een samengestelde sleutel: (Grand Prix naam + seizoen + coureur). Elk resulterend record bevat vanaf dat moment één rij met:</p>
+<p>Allereerst richtten we ons op het harmoniseren van labels: over alle datasets heen hebben we de coureur- en Grand Prix-benamingen gestandaardiseerd. Vervolgens voegden we de datasets samen met een samengestelde sleutel: (Grand Prix naam + seizoen + coureur). Elk resulterend record bevat vanaf dat moment een rij met:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Startpositie</span></code> uit de kwalificatie</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Team-</span> <span class="pre">en</span> <span class="pre">rondeninformatie</span></code> uit de race-uitslag</p></li>
@@ -416,18 +417,19 @@ code {
 <li><p><code class="docutils literal notranslate"><span class="pre">functies</span></code> bouwden om seizoenen en circuits dynamisch te selecteren,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">automatische</span> <span class="pre">validatiechecks</span></code> toevoegden voor controle op dubbele rijen of afwijkende tijdseenheden,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> inzetten voor statische visualisaties,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plotly</span></code> gebruiken voor interactieve grafieken.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plotly</span></code> gebruikten voor interactieve grafieken.</p></li>
 </ul>
 <p>Deze aanpak garandeert reproduceerbaarheid en maakt het eenvoudig om later nieuwe data in te laden én direct te visualiseren.</p>
 </section>
 <hr class="docutils" />
 <section id="variabelen-van-onze-dataset">
 <h2>Variabelen van onze dataset<a class="headerlink" href="#variabelen-van-onze-dataset" title="Link to this heading">#</a></h2>
-<p>Ons eindresultaat is één slimme tabel met per coureur–racecombinatie de volgende hoofdvariabelen:</p>
+<p>Ons eindresultaat zijn slimme samengestelde datasets met per coureur–racecombinatie de volgende hoofdvariabelen, afhankelijk van de functie of visualisatie die werd gemaakt:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">start_pos</span></code>: beginpositie / kwalificatieresultaat</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">end_pos</span></code>: eindpositie na de finish</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pitstop_count</span></code>: totaal aantal pitstops</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pit_time</span></code>: totale pitstopduur in seconden</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pit_avg</span></code>: gemiddelde pitstopduur in seconden</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pit_rel_score</span></code>: relatieve score van pitstoptijd (snelste = 1.0; anderen als fractie)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pos_change</span></code>: netto posities gewonnen of verloren</p></li>
@@ -450,6 +452,13 @@ code {
 <div><p><code class="docutils literal notranslate"><span class="pre">Pos_change</span> <span class="pre">=</span> <span class="pre">start_pos</span> <span class="pre">-</span> <span class="pre">end_pos</span></code></p>
 </div></blockquote>
 <p>Positief als een coureur terrein wint, negatief bij verlies. Met deze aggregaten leggen we de basis voor al onze visualisaties.</p>
+</section>
+<section id="referenties">
+<h2>Referenties<a class="headerlink" href="#referenties" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Debashish, R. (2023). Formula 1 Official Data 1950–2022. <a class="reference external" href="https://www.kaggle.com/datasets/debashish311601/formula-1-official-data-19502022">https://www.kaggle.com/datasets/debashish311601/formula-1-official-data-19502022</a></p></li>
+<li><p>F1 overtaking data [Data set]. (2022). Google Sheets. <a class="reference external" href="https://docs.google.com/spreadsheets/d/1XueNI7ZawEX0RLDq5dAGVqsEb1-DBOK2kUWGwM1OMKs/edit?gid=0#gid=0">https://docs.google.com/spreadsheets/d/1XueNI7ZawEX0RLDq5dAGVqsEb1-DBOK2kUWGwM1OMKs/edit?gid=0#gid=0</a></p></li>
+</ol>
 </section>
 </section>
 
@@ -518,7 +527,7 @@ code {
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-beschrijving">Dataset Beschrijving</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startposities">1. Startposities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#startpositie">1. Startpositie</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eindresultaten">2. Eindresultaten</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pitstopgegevens">3. Pitstopgegevens</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overtakes">4. Overtakes</a></li>
@@ -529,6 +538,7 @@ code {
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technische-implementatie">Technische implementatie</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variabelen-van-onze-dataset">Variabelen van onze dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernindicatoren">Kernindicatoren</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referenties">Referenties</a></li>
 </ul>
   </nav></div>
 
